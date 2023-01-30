@@ -1,0 +1,10 @@
+.form__item_el_name {
+  display: block;
+  font-family: inherit;
+  font-weight: inherit;
+  margin-bottom: 30px;
+}
+
+.form__item_el_name:focus {
+  outline: 1px solid #039;
+}

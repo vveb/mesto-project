@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="author" content="Виктор Тарапата">
+  <meta name="description" content="Страница о ">
+  <meta name="keywords" content="Россия, путешествие, природа, открытия, красота, транссиб">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="./pages/index.css">
+</head>
+<body class="page">
+  
+  <header class="header">
+    <img class="header__logo" src="./images/logo.svg" alt="Логотип проекта">
+  </header>
+
+  <main class="main">
+
+    <section class="profile">
+      <img class="profile__avatar" src="./images/photo-jacques-cousteau.jpg" alt="Жак-Ив Кусто">
+      <div class="profile__info">
+        <h1 class="profile__name">Жак-Ив Кусто</h1>
+        <button class="profile__edit-button" type="button" aria-label="Редактировать"></button>
+        <p class="profile__vocation">Исследователь океана</p>
+      </div>
+      <button class="profile__add-button" type="button" aria-label="Добавить фото"></button>
+    </section>
+
+    <section class="photo-grid">
+
+      <div class="photo-post">
+        <img class="photo-post__image" src="./images/tour-eiffel.jpg" alt="Эйфелева башня">
+        <h2 class="photo-post__title">Эйфелева башня</h2>
+        <button class="photo-post__like-button" type="button"></button>
+      </div>
+
+      <div class="photo-post">
+        <img class="photo-post__image" src="./images/arc-de-triomph.jpg" alt="Эйфелева башня">
+        <h2 class="photo-post__title">Триумфальная арка</h2>
+        <button class="photo-post__like-button" type="button"></button>
+      </div>
+      
+      <div class="photo-post">
+        <img class="photo-post__image" src="./images/notre-dame.jpg" alt="Эйфелева башня">
+        <h2 class="photo-post__title">Notre Dame</h2>
+        <button class="photo-post__like-button" type="button"></button>
+      </div>
+      
+      <div class="photo-post">
+        <img class="photo-post__image" src="./images/la-seine.jpg" alt="Эйфелева башня">
+        <h2 class="photo-post__title">Сена</h2>
+        <button class="photo-post__like-button" type="button"></button>
+      </div>
+      
+      <div class="photo-post">
+        <img class="photo-post__image" src="./images/louvre.jpg" alt="Эйфелева башня">
+        <h2 class="photo-post__title">Лувр</h2>
+        <button class="photo-post__like-button" type="button"></button>
+      </div>
+      
+      <div class="photo-post">
+        <img class="photo-post__image" src="./images/sacre-coeur.jpg" alt="Эйфелева башня">
+        <h2 class="photo-post__title">Sacre Coeur</h2>
+        <button class="photo-post__like-button" type="button"></button>
+      </div>
+      
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p class="footer__copyright">&copy; 2023 Mesto Russia</p>
+  </footer>
+  
+  <div class="popup">
+    <div class="popup__container">
+      <div class="popup__close-icon"></div>
+      <form class="form">
+        <h2 class="form__title">Редактировать профиль</h2>
+        <fieldset class="form__input-container">
+          <input type="text" class="form__item form__item_el_name" name="name" placeholder="Имя и фамилия" required>
+          <input type="text" class="form__item form__item_el_vocation" name="vocation" placeholder="Призвание">
+        </fieldset>
+        <button type="submit" class="form__button">Сохранить</button>
+      </form>
+    </div>
+  </div>
+
+</body>
+</html>

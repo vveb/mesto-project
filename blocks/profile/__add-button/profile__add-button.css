@@ -1,0 +1,47 @@
+.profile__add-button {
+  flex-grow: 4;
+  max-width: 150px;
+  min-height: 50px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  border-radius: 2px;
+  border: 1px solid #fff;
+  background-color: transparent;
+  font-family: inherit;
+  padding: 0 10px;
+  user-select: none;
+  text-align: center;
+  color: #fff;
+
+  background-image: url('../../../images/plus-icon.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 22px 22px;
+  object-fit: cover;
+
+  transition: opacity .5s ease-out;
+}
+
+.profile__add-button:hover{
+  opacity: .6;
+  cursor: pointer;
+}
+
+.profile__add-button:focus{
+  outline: none;
+}
+
+@media screen and (max-width: 580px) {
+  .profile__add-button {
+    max-width: 282px;
+    margin-top: 33px;
+    width: 100%;
+    background-size: 16px 16px;
+  }
+}

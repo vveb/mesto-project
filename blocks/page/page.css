@@ -1,0 +1,13 @@
+.page {
+  /* min-width: 320px; */
+  max-width: 1280px;
+  font-family: 'Inter', 'Arial', sans-serif;
+  margin: 0 auto;
+  background-color: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: content-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}

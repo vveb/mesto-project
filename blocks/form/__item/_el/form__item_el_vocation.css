@@ -1,0 +1,9 @@
+.form__item_el_vocation {
+  display: block;
+  font-family: inherit;
+  font-weight: inherit;
+}
+
+.form__item_el_vocation:focus {
+  outline: 1px solid #039;
+}
