@@ -19,7 +19,7 @@
   <main class="main">
 
     <section class="profile">
-      <img class="profile__avatar" src="./images/photo-jacques-cousteau.jpg" alt="Жак-Ив Кусто">
+      <img class="profile__avatar" src="./images/photo-jacques-cousteau.jpg" alt="Аватарка">
       <div class="profile__info">
         <h1 class="profile__name">Жак-Ив Кусто</h1>
         <button class="profile__edit-button" type="button" aria-label="Редактировать"></button>
@@ -30,41 +30,41 @@
 
     <section class="photo-grid">
 
-      <div class="photo-post">
+      <article class="photo-post">
         <img class="photo-post__image" src="./images/tour-eiffel.jpg" alt="Эйфелева башня">
         <h2 class="photo-post__title">Эйфелева башня</h2>
-        <button class="photo-post__like-button" type="button" name="like"></button>
-      </div>
+        <button class="photo-post__like-button" type="button" name="like" aria-label="Нравится"></button>
+      </article>
 
-      <div class="photo-post">
+      <article class="photo-post">
         <img class="photo-post__image" src="./images/arc-de-triomph.jpg" alt="Триумфальная арка">
         <h2 class="photo-post__title">Триумфальная арка</h2>
-        <button class="photo-post__like-button" type="button" name="like"></button>
-      </div>
+        <button class="photo-post__like-button" type="button" name="like" aria-label="Нравится"></button>
+      </article>
       
-      <div class="photo-post">
+      <article class="photo-post">
         <img class="photo-post__image" src="./images/notre-dame.jpg" alt="Собор Парижской Богоматери">
         <h2 class="photo-post__title">Notre Dame</h2>
-        <button class="photo-post__like-button" type="button" name="like"></button>
-      </div>
+        <button class="photo-post__like-button" type="button" name="like" aria-label="Нравится"></button>
+      </article>
       
-      <div class="photo-post">
+      <article class="photo-post">
         <img class="photo-post__image" src="./images/la-seine.jpg" alt="Река Сена">
         <h2 class="photo-post__title">Сена</h2>
-        <button class="photo-post__like-button" type="button" name="like"></button>
-      </div>
+        <button class="photo-post__like-button" type="button" name="like" aria-label="Нравится"></button>
+      </article>
       
-      <div class="photo-post">
+      <darticleiv class="photo-post">
         <img class="photo-post__image" src="./images/louvre.jpg" alt="Лувр">
         <h2 class="photo-post__title">Лувр</h2>
-        <button class="photo-post__like-button" type="button" name="like"></button>
-      </div>
+        <button class="photo-post__like-button" type="button" name="like" aria-label="Нравится"></button>
+      </darticleiv>
       
-      <div class="photo-post">
+      <article class="photo-post">
         <img class="photo-post__image" src="./images/sacre-coeur.jpg" alt="Базилика Сакре-Кёр">
         <h2 class="photo-post__title">Sacre Coeur</h2>
-        <button class="photo-post__like-button" type="button" name="like"></button>
-      </div>
+        <button class="photo-post__like-button" type="button" name="like" aria-label="Нравится"></button>
+      </article>
       
     </section>
   </main>
@@ -73,19 +73,19 @@
     <p class="footer__copyright">&copy; 2023 Mesto Russia</p>
   </footer>
   
-  <div class="popup">
+  <section class="popup">
     <div class="popup__container">
-      <div class="popup__close-icon"></div>
-      <form class="form">
+      <button class="popup__close-button" type="button" aria-label="Закрыть форму"></button>
+      <form class="form" name="edit-profile-info">
         <h2 class="form__title">Редактировать профиль</h2>
         <fieldset class="form__input-container">
-          <input class="form__item form__item_el_name" type="text" name="name" placeholder="Имя и фамилия" required>
-          <input class="form__item form__item_el_vocation" type="text" name="vocation" placeholder="Призвание">
+          <input class="form__item" type="text" name="name" placeholder="Имя и фамилия" required>
+          <input class="form__item" type="text" name="vocation" placeholder="Призвание">
         </fieldset>
         <button class="form__button" type="submit">Сохранить</button>
       </form>
     </div>
-  </div>
+  </section>
 
 </body>
 </html>

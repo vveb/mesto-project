@@ -15,7 +15,7 @@
   align-items: baseline;
 }
 
-@media screen and (max-width: 580px) {
+@media screen and (max-width: 581px) {
   .profile__info {
     grid-template-columns: minmax(min-content, 189px) minmax(18px, 1fr);
     padding-left: 0;

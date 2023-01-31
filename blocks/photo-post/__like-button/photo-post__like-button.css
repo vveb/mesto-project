@@ -1,29 +1,26 @@
 .photo-post__like-button {
-  grid-area: like-button;
-  min-width: 22px;
-  min-height: 19px;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  -webkit-appearance: none;
   -moz-appearance: none;
+  -moz-box-sizing: border-box;
+  -webkit-appearance: none;
+  -webkit-box-sizing: border-box;
   appearance: none;
-
-  border: 0;
   background-color: transparent;
-  font-family: inherit;
-  padding: 0 2px;
-  user-select: none;
-  text-align: center;
-  color: #fff;
-
   background-image: url('../../../images/heart-icon-disabled.svg');
   background-position: center;
   background-repeat: no-repeat;
   background-size: 22px 19px;
+  border: 0;
+  box-sizing: border-box;
+  color: #fff;
+  font-family: inherit;
+  grid-area: like-button;
+  min-height: 19px;
+  min-width: 22px;
   object-fit: cover;
-
+  padding: 0 2px;
+  text-align: center;
   transition: opacity .3s ease;
+  user-select: none;
 }
 
 .photo-post__like-button:hover{

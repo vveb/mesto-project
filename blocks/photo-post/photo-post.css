@@ -4,7 +4,7 @@
   width: 100%;
   border-radius: 10px;
   display: grid;
-  grid-template-rows: minmax(50px, 282px) minmax(50px, 79px);
+  grid-template-rows: 282px 79px;
   grid-template-columns: minmax(0, 21px) fit-content(188px) auto min-content minmax(0, 20px);
   grid-template-areas: 
   "image image image image image"
