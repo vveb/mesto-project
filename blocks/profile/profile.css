@@ -11,10 +11,10 @@
   flex-wrap: wrap;
 }
 
-@media screen and (max-width: 580px) {
+@media screen and (max-width: 645px) {
   .profile {
     flex-direction: column;
-    max-width: 282px;
+    /* max-width: 282px; */
     width: 100%;
     padding-top: 42px;
   }

@@ -15,12 +15,13 @@
   align-items: baseline;
 }
 
-@media screen and (max-width: 581px) {
+@media screen and (max-width: 645px) {
   .profile__info {
     grid-template-columns: minmax(min-content, 189px) minmax(18px, 1fr);
     padding-left: 0;
     justify-items: center;
     column-gap: 10px;
     padding-top: 26px;
+    margin-left: 28px;
   }
 }
