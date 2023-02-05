@@ -5,7 +5,13 @@
   display: flex;
   flex-direction: column;
   max-width: 430px;
-  min-width: 282px;
   position: relative;
   width: calc(100% - 96px);
+  outline: 1px solid greenyellow;
+}
+
+@media screen and (max-width: 320px) {
+  .popup__container {
+    width: calc(100% - 38px);
+  }
 }

@@ -1,5 +1,4 @@
 .photo-post__title {
-  grid-area: title;
   margin: 0;
   font-style: normal;
   font-weight: 900;
@@ -8,4 +7,5 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+  max-width: 188px;
 }

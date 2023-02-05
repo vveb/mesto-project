@@ -1,5 +1,4 @@
 .photo-post__image {
-  grid-area: image;
   display: block;
   max-width: 282px;
   width: 100%;
