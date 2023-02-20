@@ -1,24 +1,10 @@
-function popupOpen(popup, text0, text1) {
-  popup.classList.add('popup_opened', 'popup_transition');
-  const popupForm = popup.querySelector('.form');
-  let popupInputs = popup.querySelectorAll('.form__item');
-  if (text0 !== undefined && text1 !== undefined) {
-    popupInputs[0].value = text0.textContent;
-    popupInputs[1].value = text1.textContent;
-    popupForm.addEventListener('input', () => checkValidity(popup, popupInputs[0]));
-  } else {
-    const saveButton = popup.querySelector('.form__button');
-    saveButton.disabled = true;
-    saveButton.classList.add('form__button_disabled');
-    popupInputs[0] = null;
-    popupInputs[1] = null;
-    popupForm.addEventListener('input', () => checkValidity(popup, popupInputs[0]));
-    popupForm.addEventListener('input', () => checkValidity(popup, popupInputs[1]));
-  }
-  
+function validateUrlString(value) {
+    const expression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi
+    const regexp = new RegExp(expression);
+    return regexp.test(value);
 }
 
-function checkValidity(popup, requiredInput) {
+function checkEmptyInput(popup, requiredInput) {
   const saveButton = popup.querySelector('.form__button');
   if (!requiredInput.value) {
     saveButton.disabled = true;
@@ -29,9 +15,28 @@ function checkValidity(popup, requiredInput) {
   }
 }
 
+function popupOpen(popup, text0, text1) {
+  popup.classList.add('popup_opened', 'popup_transition');
+  const popupForm = popup.querySelector('.form');
+  let popupInputs = popup.querySelectorAll('.form__item');
+  if (text0 !== undefined && text1 !== undefined) {
+    popupInputs[0].value = text0.textContent;
+    popupInputs[1].value = text1.textContent;
+    popupForm.addEventListener('input', () => checkEmptyInput(popup, popupInputs[0]));
+  } else {
+    const saveButton = popup.querySelector('.form__button');
+    saveButton.disabled = true;
+    saveButton.classList.add('form__button_disabled');
+    popupInputs[0] = null;
+    popupInputs[1] = null;
+    popupForm.addEventListener('input', () => checkEmptyInput(popup, popupInputs[0]));
+    popupForm.addEventListener('input', () => checkEmptyInput(popup, popupInputs[1]));
+  }
+}
+
 function popupClose(popup) {
   const popupForm = popup.querySelector('.form');
-  popupForm.removeEventListener('input', checkValidity);
+  popupForm.removeEventListener('input', checkEmptyInput);
   popup.classList.remove('popup_opened');
   const saveButton = popup.querySelector('.form__button');
   saveButton.disabled = false;
@@ -50,8 +55,12 @@ function popupSaveChanges(evt, popup, textbox0, textbox1) {
     textbox0.textContent = popupInputs[0].value;
     textbox1.textContent = popupInputs[1].value;
   } else if (popup.classList.contains('popup__new-post')) {
-    popupClose(popup);
-    // addNewPost(popupInputs[0].value, popupInputs[1].value);
+    if (validateUrlString(popupInputs[1].value)) {
+      addPost(popupInputs[0].value, popupInputs[1].value);
+    } else {
+      popupInputs[1].value = 'Неверная ссылка!';
+      return;
+    }
   }
   popupClose(popup);
 }
