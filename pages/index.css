@@ -22,6 +22,7 @@
 @import url('../blocks/photo-post/__caption/photo-post__caption.css');
 @import url('../blocks/photo-post/__title/photo-post__title.css');
 @import url('../blocks/photo-post/__like-button/photo-post__like-button.css');
+@import url('../blocks/photo-post/__like-button/_active/photo-post__like-button_active.css');
 
 @import url('../blocks/footer/footer.css');
 @import url('../blocks/footer/__copyright/footer__copyright.css');

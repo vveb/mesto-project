@@ -18,7 +18,7 @@
   object-fit: cover;
   padding: 0 2px;
   text-align: center;
-  transition: opacity .3s ease;
+  transition: opacity .3s ease, transform .2s ease;
   user-select: none;
 }
 
@@ -32,7 +32,5 @@
 }
 
 .photo-post__like-button:active{
-  outline: none;
-  background-image: url('../../../images/heart-icon-active.svg');
-  opacity: 1;
+  transform: scale(.8);
 }

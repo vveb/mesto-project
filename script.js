@@ -72,6 +72,9 @@ function createNewPost(title, link) {
   photoPostImage.src = link;
   photoPostImage.alt = title;
   photoPost.querySelector('.photo-post__title').textContent = title;
+  photoPost.querySelector('.photo-post__like-button').addEventListener('click', function(evt) {
+    evt.target.classList.toggle('photo-post__like-button_active');
+  });
   return photoPost;
 }
 
