@@ -56,20 +56,53 @@ function popupSaveChanges(evt, popup, textbox0, textbox1) {
   popupClose(popup);
 }
 
-// function addNewPost(title, link) {
-//   console.log(title);
-//   console.log(link);
-//   const photoGrid = document.querySelector('.photo-grid');
-//   const newPost = `
-//   <article class="photo-post">
-//     <img class="photo-post__image" src="${link}" alt="${title}">
-//     <div class="photo-post__caption">
-//       <h2 class="photo-post__title">${title}</h2>
-//       <button class="photo-post__like-button" type="button" name="like" aria-label="Нравится"></button>
-//     </div>
-//   </article>`;
-//   photoGrid.insertAdjacentHTML('afterbegin', newPost);
-// }
+function createNewPost(title, link) {
+  const templatePhotoPost = document.querySelector('#template-photo-post').content;
+  const photoPost = templatePhotoPost.querySelector('.photo-post').cloneNode(true);
+  const photoPostImage = photoPost.querySelector('.photo-post__image');
+  photoPostImage.src = link;
+  photoPostImage.alt = title;
+  photoPost.querySelector('.photo-post__title').textContent = title;
+  return photoPost;
+}
+
+function addPost(title, link) {
+  document.querySelector('.photo-grid').prepend(createNewPost(title, link));
+}
+
+function initialPosts() {
+  const initialPostsList = [
+    {
+      title: 'Sacre Coeur',
+      link: './images/sacre-coeur.jpg'
+    },
+    {
+      title: 'Лувр',
+      link: './images/louvre.jpg'
+    },
+    {
+      title: 'Сена',
+      link: './images/la-seine.jpg'
+    },
+    {
+      title: 'Notre Dame',
+      link: './images/notre-dame.jpg'
+    },
+    {
+      title: 'Триумфальная арка',
+      link: './images/arc-de-triomph.jpg'
+    },
+    {
+      title: 'Эйфелева башня',
+      link: './images/tour-eiffel.jpg'
+    }
+  ];
+  
+  for (let i = 0; i < initialPostsList.length; i++) {
+    addPost(initialPostsList[i].title, initialPostsList[i].link);
+  }
+}
+initialPosts();
 
 const profile = document.querySelector('.profile');
 const profileEditButton = profile.querySelector('.profile__edit-button');
