@@ -1,0 +1,7 @@
+.view-post__image {
+  display: block;
+  margin: 0;
+  max-width: 75vw;
+  max-height: 75vh;
+  object-fit: cover;
+}

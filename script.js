@@ -15,15 +15,17 @@ function checkEmptyInputs(popup, requiredValue0, requiredValue1) {
   }
 }
 
-function popupOpen(popup, text0, text1) {
+function openPopup(popup, value0, value1) {
   popup.classList.add('popup_opened', 'popup_transition');
-  const popupForm = popup.querySelector('.form');
-  const popupInputs = popup.querySelectorAll('.form__item');
   if (popup.classList.contains('popup_edit-profile')) {
-    popupInputs[0].value = text0.textContent;
-    popupInputs[1].value = text1.textContent;
+    const popupForm = popup.querySelector('.form');
+    const popupInputs = popup.querySelectorAll('.form__item');
+    popupInputs[0].value = value0.textContent;
+    popupInputs[1].value = value1.textContent;
     popupForm.addEventListener('input', () => checkEmptyInputs(popup, popupInputs[0].value, true));
   } else if (popup.classList.contains('popup_new-post')) {
+    const popupForm = popup.querySelector('.form');
+    const popupInputs = popup.querySelectorAll('.form__item');
     const saveButton = popup.querySelector('.form__button');
     saveButton.disabled = true;
     saveButton.classList.add('form__button_disabled');
@@ -31,25 +33,31 @@ function popupOpen(popup, text0, text1) {
     popupInputs[1].value = null;
     popupForm.addEventListener('input', () => checkEmptyInputs(popup, popupInputs[0].value, popupInputs[1].value));
   } else {
-    return;
+    const image = popup.querySelector('.view-post__image');
+    image.src = value1;
+    image.alt = value0;
+    const caption = popup.querySelector('.view-post__caption');
+    caption.textContent = value0;
   }
 }
 
-function popupClose(popup) {
-  const popupForm = popup.querySelector('.form');
-  popupForm.removeEventListener('input', checkEmptyInputs);
+function closePopup(popup) {
   popup.classList.remove('popup_opened');
-  const saveButton = popup.querySelector('.form__button');
-  saveButton.disabled = false;
-  saveButton.classList.remove('form__button_disabled');
-  if (popup.classList.contains('popup_new-post')) {
-    const popupInputs = popup.querySelectorAll('.form__item');
-    popupInputs[0].value = '';
-    popupInputs[1].value = '';
+    if (popup.classList.contains('popup_new-post', 'popup_edit-profile')) {
+    const popupForm = popup.querySelector('.form');
+    popupForm.removeEventListener('input', checkEmptyInputs);
+    const saveButton = popup.querySelector('.form__button');
+    saveButton.disabled = false;
+    saveButton.classList.remove('form__button_disabled');
+    if (popup.classList.contains('popup_new-post')) {
+      const popupInputs = popup.querySelectorAll('.form__item');
+      popupInputs[0].value = '';
+      popupInputs[1].value = '';
+    }
   }
 }
 
-function popupSaveChanges(evt, popup, textbox0, textbox1) {
+function saveChangesPopup(evt, popup, textbox0, textbox1) {
   evt.preventDefault();
   const popupInputs = popup.querySelectorAll('.form__item');
   if (popup.classList.contains('popup_edit-profile')) { 
@@ -63,7 +71,7 @@ function popupSaveChanges(evt, popup, textbox0, textbox1) {
       return;
     }
   }
-  popupClose(popup);
+  closePopup(popup);
 }
 
 function createNewPost(title, link) {
@@ -72,6 +80,7 @@ function createNewPost(title, link) {
   const photoPostImage = photoPost.querySelector('.photo-post__image');
   photoPostImage.src = link;
   photoPostImage.alt = title;
+  photoPostImage.addEventListener('click', () => openPopup(popupPost, title, link));
   photoPost.querySelector('.photo-post__title').textContent = title;
   photoPost.querySelector('.photo-post__like-button').addEventListener('click', function(evt) {
     evt.target.classList.toggle('photo-post__like-button_active');
@@ -119,7 +128,6 @@ function loadInitialPosts() {
     addPost(initialPostsList[i].title, initialPostsList[i].link);
   }
 }
-loadInitialPosts();
 
 const profile = document.querySelector('.profile');
 const profileEditButton = profile.querySelector('.profile__edit-button');
@@ -130,17 +138,23 @@ const popupEditProfile = document.querySelector('.popup_edit-profile');
 const editProfileCloseButton = popupEditProfile.querySelector('.popup__close-button');
 const editProfileForm = popupEditProfile.querySelector('.form');
 
-// const callback = () => popupOpen(popupEditProfile);
+// const callback = () => openPopup(popupEditProfile);
 
-profileEditButton.addEventListener('click', () => popupOpen(popupEditProfile, profileName, profileVocation));
-editProfileForm.addEventListener('submit', (evt) => popupSaveChanges(evt, popupEditProfile, profileName, profileVocation));
-editProfileCloseButton.addEventListener('click', () => popupClose(popupEditProfile));
+profileEditButton.addEventListener('click', () => openPopup(popupEditProfile, profileName, profileVocation));
+editProfileForm.addEventListener('submit', (evt) => saveChangesPopup(evt, popupEditProfile, profileName, profileVocation));
+editProfileCloseButton.addEventListener('click', () => closePopup(popupEditProfile));
 
 const addNewPostButton = document.querySelector('.profile__add-button')
 const popupNewPost = document.querySelector('.popup_new-post');
 const newPostCloseButton = popupNewPost.querySelector('.popup__close-button');
 const newPostForm = popupNewPost.querySelector('.form');
 
-addNewPostButton.addEventListener('click', () => popupOpen(popupNewPost));
-newPostCloseButton.addEventListener('click', () => popupClose(popupNewPost));
-newPostForm.addEventListener('submit', (evt) => popupSaveChanges(evt, popupNewPost));
+addNewPostButton.addEventListener('click', () => openPopup(popupNewPost));
+newPostCloseButton.addEventListener('click', () => closePopup(popupNewPost));
+newPostForm.addEventListener('submit', (evt) => saveChangesPopup(evt, popupNewPost));
+
+const popupPost = document.querySelector('.popup_post');
+const postImageCloseButton = popupPost.querySelector('.popup__close-button');
+postImageCloseButton.addEventListener('click', () => closePopup(popupPost));
+
+loadInitialPosts();

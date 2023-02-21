@@ -5,3 +5,7 @@
   object-fit: cover;
   object-position: center;
 }
+
+.photo-post__image:hover {
+  cursor: pointer;
+}

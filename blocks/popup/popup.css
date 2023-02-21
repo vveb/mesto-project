@@ -8,7 +8,15 @@
   padding: 0;
   position: fixed;
   width: 100%;
-  transform: translateY(20px);
   opacity: 0;
   visibility: hidden;
+}
+
+.popup .popup__container {
+  transform: translateY(20px);
+  transition: transform .5s ease;
+}
+
+.popup.popup_post {
+  background: rgba(0, 0, 0, .9);
 }

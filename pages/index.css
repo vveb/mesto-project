@@ -41,3 +41,7 @@
 @import url('../blocks/form/__item/form__item.css');
 @import url('../blocks/form/__title/form__title.css');
 
+@import url('../blocks/view-post/view-post.css');
+@import url('../blocks/view-post/__image/view-post__image.css');
+@import url('../blocks/view-post/__caption/view-post__caption.css');
+
