@@ -75,6 +75,10 @@ function createNewPost(title, link) {
   photoPost.querySelector('.photo-post__like-button').addEventListener('click', function(evt) {
     evt.target.classList.toggle('photo-post__like-button_active');
   });
+  const deleteButton = photoPost.querySelector('.photo-post__delete-button');
+    deleteButton.addEventListener('click', function() {
+    deleteButton.closest('.photo-post').remove();
+  });
   return photoPost;
 }
 
@@ -82,7 +86,7 @@ function addPost(title, link) {
   document.querySelector('.photo-grid').prepend(createNewPost(title, link));
 }
 
-function initialPosts() {
+function loadInitialPosts() {
   const initialPostsList = [
     {
       title: 'Sacre Coeur',
@@ -114,7 +118,7 @@ function initialPosts() {
     addPost(initialPostsList[i].title, initialPostsList[i].link);
   }
 }
-initialPosts();
+loadInitialPosts();
 
 const profile = document.querySelector('.profile');
 const profileEditButton = profile.querySelector('.profile__edit-button');

@@ -18,6 +18,7 @@
 
 @import url('../blocks/photo-grid/photo-grid.css');
 @import url('../blocks/photo-post/photo-post.css');
+@import url('../blocks/photo-post/__delete-button/photo-post__delete-button.css');
 @import url('../blocks/photo-post/__image/photo-post__image.css');
 @import url('../blocks/photo-post/__caption/photo-post__caption.css');
 @import url('../blocks/photo-post/__title/photo-post__title.css');
