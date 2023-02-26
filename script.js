@@ -1,86 +1,69 @@
-function validateUrlString(value) {
+function validateURLString(value) {
     const expression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi
     const regexp = new RegExp(expression);
     return regexp.test(value);
 }
 
-function checkEmptyInputs(popup, requiredValue0, requiredValue1) {
-  const saveButton = popup.querySelector('.form__button');
+function checkEmptyInputs(requiredValue0, requiredValue1, submitButton) {
   if (requiredValue0 && requiredValue1) {
-    saveButton.disabled = false;
-    saveButton.classList.remove('form__button_disabled');
+    submitButton.disabled = false;
+    submitButton.classList.remove('form__button_disabled');
   } else {
-    saveButton.disabled = true;
-    saveButton.classList.add('form__button_disabled');
+    submitButton.disabled = true;
+    submitButton.classList.add('form__button_disabled');
   }
 }
 
-function openPopup(popup, value0, value1) {
+function openPopupEditProfile(popup, name, vocation) {
   popup.classList.add('popup_opened', 'popup_transition');
-  if (popup.classList.contains('popup_edit-profile')) {
-    const popupForm = popup.querySelector('.form');
-    const popupInputs = popup.querySelectorAll('.form__item');
-    popupInputs[0].value = value0.textContent;
-    popupInputs[1].value = value1.textContent;
-    popupForm.addEventListener('input', () => checkEmptyInputs(popup, popupInputs[0].value, true));
-  } else if (popup.classList.contains('popup_new-post')) {
-    const popupForm = popup.querySelector('.form');
-    const popupInputs = popup.querySelectorAll('.form__item');
-    const saveButton = popup.querySelector('.form__button');
-    saveButton.disabled = true;
-    saveButton.classList.add('form__button_disabled');
-    popupInputs[0].value = null;
-    popupInputs[1].value = null;
-    popupForm.addEventListener('input', () => checkEmptyInputs(popup, popupInputs[0].value, popupInputs[1].value));
-  } else {
-    const image = popup.querySelector('.view-post__image');
-    image.src = value1;
-    image.alt = value0;
-    const caption = popup.querySelector('.view-post__caption');
-    caption.textContent = value0;
-  }
+  editProfileInputName.value = name.textContent;
+  editProfileInputVocation.value = vocation.textContent;
+}
+
+function openPopupNewPost(popup) {
+  popup.classList.add('popup_opened', 'popup_transition');
+  newPostForm.reset();
+  newPostSaveButton.disabled = true;
+  newPostSaveButton.classList.add('form__button_disabled');
+}
+
+function openPopupPost(popup, title, link) {
+  popup.classList.add('popup_opened', 'popup_transition');
+  imagePost.alt = title;
+  imagePost.src = link;
+  captionPost.textContent = title;
 }
 
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
-    if (popup.classList.contains('popup_new-post', 'popup_edit-profile')) {
-    const popupForm = popup.querySelector('.form');
-    popupForm.removeEventListener('input', checkEmptyInputs);
-    const saveButton = popup.querySelector('.form__button');
-    saveButton.disabled = false;
-    saveButton.classList.remove('form__button_disabled');
-    if (popup.classList.contains('popup_new-post')) {
-      const popupInputs = popup.querySelectorAll('.form__item');
-      popupInputs[0].value = '';
-      popupInputs[1].value = '';
-    }
-  }
 }
 
-function saveChangesPopup(evt, popup, textbox0, textbox1) {
+function saveProfileInfo(evt, popup, name, vocation) {
   evt.preventDefault();
-  const popupInputs = popup.querySelectorAll('.form__item');
-  if (popup.classList.contains('popup_edit-profile')) { 
-    textbox0.textContent = popupInputs[0].value;
-    textbox1.textContent = popupInputs[1].value;
-  } else if (popup.classList.contains('popup_new-post')) {
-    if (validateUrlString(popupInputs[1].value)) {
-      addPost(popupInputs[0].value, popupInputs[1].value);
-    } else {
-      popupInputs[1].value = 'Неверная ссылка!';
-      return;
-    }
+  name.textContent = editProfileInputName.value;
+  vocation.textContent = editProfileInputVocation.value;
+  closePopup(popup);
+}
+
+function saveNewPost(evt, popup) {
+  evt.preventDefault();
+  if (validateURLString(newPostInputLink.value)) {
+    addPost(newPostInputTitle.value, newPostInputLink.value);
+  } else {
+    newPostInputLink.value = 'Неверная ссылка!';
+    newPostSaveButton.disabled = true;
+    newPostSaveButton.classList.add('form__button_disabled');
+    return;
   }
   closePopup(popup);
 }
 
 function createNewPost(title, link) {
-  const templatePhotoPost = document.querySelector('#template-photo-post').content;
   const photoPost = templatePhotoPost.querySelector('.photo-post').cloneNode(true);
   const photoPostImage = photoPost.querySelector('.photo-post__image');
   photoPostImage.src = link;
   photoPostImage.alt = title;
-  photoPostImage.addEventListener('click', () => openPopup(popupPost, title, link));
+  photoPostImage.addEventListener('click', () => openPopupPost(popupPost, title, link));
   photoPost.querySelector('.photo-post__title').textContent = title;
   photoPost.querySelector('.photo-post__like-button').addEventListener('click', function(evt) {
     evt.target.classList.toggle('photo-post__like-button_active');
@@ -93,7 +76,7 @@ function createNewPost(title, link) {
 }
 
 function addPost(title, link) {
-  document.querySelector('.photo-grid').prepend(createNewPost(title, link));
+  photoGrid.prepend(createNewPost(title, link));
 }
 
 function loadInitialPosts() {
@@ -129,31 +112,60 @@ function loadInitialPosts() {
   }
 }
 
-const profileEditButton = document.querySelector('.profile__edit-button');
-const profileName = document.querySelector('.profile__name');
-const profileVocation = document.querySelector('.profile__vocation');
-profileEditButton.addEventListener('click', () => openPopup(popupEditProfile, profileName, profileVocation));
+// Page main elemets
+const photoGrid = document.querySelector('.photo-grid');
+const templatePhotoPost = document.querySelector('#template-photo-post').content;
 
+// Popups
 const popupEditProfile = document.querySelector('.popup_edit-profile');
-const editProfileForm = popupEditProfile.querySelector('.form');
-editProfileForm.addEventListener('submit', (evt) => saveChangesPopup(evt, popupEditProfile, profileName, profileVocation));
-
-// Оставил для себя, чтобы не забыть, что callback-функцию можно убрать в отдельную переменную
-// const callback = () => openPopup(popupEditProfile);
-
-const addNewPostButton = document.querySelector('.profile__add-button')
 const popupNewPost = document.querySelector('.popup_new-post');
-const newPostForm = popupNewPost.querySelector('.form');
-
-addNewPostButton.addEventListener('click', () => openPopup(popupNewPost));
-newPostForm.addEventListener('submit', (evt) => saveChangesPopup(evt, popupNewPost));
-
 const popupPost = document.querySelector('.popup_post');
 
+// Forms
+const editProfileForm = popupEditProfile.querySelector('.form');
+const editProfileInputName = editProfileForm.querySelector('.form__item_el_name');
+const editProfileInputVocation = editProfileForm.querySelector('.form__item_el_vocation');
+
+const newPostForm = popupNewPost.querySelector('.form');
+const newPostInputTitle = newPostForm.querySelector('.form__item_el_title');
+const newPostInputLink = newPostForm.querySelector('.form__item_el_link');
+
+// Buttons
+const profileEditButton = document.querySelector('.profile__edit-button');
+const profileEditSaveButton = popupEditProfile.querySelector('.form__button')
+const newPostAddButton = document.querySelector('.profile__add-button');
+const newPostSaveButton = popupNewPost.querySelector('.form__button');
 const closeButtons = document.querySelectorAll('.popup__close-button');
+
+// Event listeners for all Close popup buttons
 closeButtons.forEach((button) => {
   const popup = button.closest('.popup');
   button.addEventListener('click', () => closePopup(popup))
 });
+
+// Event listeners for Edit profile
+const profileName = document.querySelector('.profile__name');
+const profileVocation = document.querySelector('.profile__vocation');
+profileEditButton.addEventListener('click', () => openPopupEditProfile(popupEditProfile, profileName, profileVocation));
+editProfileForm.addEventListener('submit', (evt) => saveProfileInfo(evt, popupEditProfile, profileName, profileVocation));
+// Дорогой ревьюер, в прошлой итерации Вы указали на недопустимость навешивания слушателя валидации при каждом открытии формы
+// В моем коде такие обработчики удалялись при вызове функции closePopup, чтобы не допустить коллизий и неэффективного использования памяти
+// Но Вы также указали, что удаление нужно делать (!)правильно(!).
+// Понимаю возможность неверности использовавшегося ранее подхода, но валидацию оставить хотелось бы, если можно, поэтому повесил ее один раз тут и ниже.
+// Если нельзя, уберу на следующей итерации.
+// Это не вопрос и не просьба о помощи, так что, надеюсь, все корректно и законно =)
+editProfileForm.addEventListener('input', () => checkEmptyInputs(editProfileInputName.value, true, profileEditSaveButton));
+
+// Event listeners for New Post
+newPostAddButton.addEventListener('click', () => openPopupNewPost(popupNewPost));
+newPostForm.addEventListener('submit', (evt) => saveNewPost(evt, popupNewPost));
+newPostForm.addEventListener('input', () => checkEmptyInputs(newPostInputTitle.value, newPostInputLink.value, newPostSaveButton));
+
+// Elements of popup Post
+const imagePost = popupPost.querySelector('.view-post__image');
+const captionPost = popupPost.querySelector('.view-post__caption');
+
+// Оставил для себя, чтобы не забыть, что callback-функцию можно убрать в отдельную переменную
+// const callbackFunction = () => openPopup(popupEditProfile);
 
 loadInitialPosts();
