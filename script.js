@@ -135,26 +135,25 @@ const profileVocation = document.querySelector('.profile__vocation');
 profileEditButton.addEventListener('click', () => openPopup(popupEditProfile, profileName, profileVocation));
 
 const popupEditProfile = document.querySelector('.popup_edit-profile');
-const editProfileCloseButton = popupEditProfile.querySelector('.popup__close-button');
 const editProfileForm = popupEditProfile.querySelector('.form');
 editProfileForm.addEventListener('submit', (evt) => saveChangesPopup(evt, popupEditProfile, profileName, profileVocation));
 
 // Оставил для себя, чтобы не забыть, что callback-функцию можно убрать в отдельную переменную
 // const callback = () => openPopup(popupEditProfile);
 
-editProfileCloseButton.addEventListener('click', () => closePopup(popupEditProfile));
-
 const addNewPostButton = document.querySelector('.profile__add-button')
 const popupNewPost = document.querySelector('.popup_new-post');
-const newPostCloseButton = popupNewPost.querySelector('.popup__close-button');
 const newPostForm = popupNewPost.querySelector('.form');
 
 addNewPostButton.addEventListener('click', () => openPopup(popupNewPost));
-newPostCloseButton.addEventListener('click', () => closePopup(popupNewPost));
 newPostForm.addEventListener('submit', (evt) => saveChangesPopup(evt, popupNewPost));
 
 const popupPost = document.querySelector('.popup_post');
-const postCloseButton = popupPost.querySelector('.popup__close-button');
-postCloseButton.addEventListener('click', () => closePopup(popupPost));
+
+const closeButtons = document.querySelectorAll('.popup__close-button');
+closeButtons.forEach((button) => {
+  const popup = button.closest('.popup');
+  button.addEventListener('click', () => closePopup(popup))
+});
 
 loadInitialPosts();
