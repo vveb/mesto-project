@@ -14,28 +14,32 @@ function checkEmptyInputs(requiredValue0, requiredValue1, submitButton) {
   }
 }
 
-function openPopupEditProfile(popup, name, vocation) {
-  popup.classList.add('popup_opened', 'popup_transition');
+function openPopup(popup) {
+  popup.classList.add('popup_opened');
+  if (!popup.classList.contains('popup_transition')) {
+    popup.classList.add('popup_transition');
+  }
+}
+
+function closePopup(popup) {
+  popup.classList.remove('popup_opened');
+}
+
+function renderEditProfile(name, vocation) {
   editProfileInputName.value = name.textContent;
   editProfileInputVocation.value = vocation.textContent;
 }
 
-function openPopupNewPost(popup) {
-  popup.classList.add('popup_opened', 'popup_transition');
+function renderNewPost() {
   newPostForm.reset();
   newPostSaveButton.disabled = true;
   newPostSaveButton.classList.add('form__button_disabled');
 }
 
-function openPopupPost(popup, title, link) {
-  popup.classList.add('popup_opened', 'popup_transition');
+function renderPost(title, link) {
   imagePost.alt = title;
   imagePost.src = link;
   captionPost.textContent = title;
-}
-
-function closePopup(popup) {
-  popup.classList.remove('popup_opened');
 }
 
 function saveProfileInfo(evt, popup, name, vocation) {
@@ -63,7 +67,7 @@ function createNewPost(title, link) {
   const photoPostImage = photoPost.querySelector('.photo-post__image');
   photoPostImage.src = link;
   photoPostImage.alt = title;
-  photoPostImage.addEventListener('click', () => openPopupPost(popupPost, title, link));
+  photoPostImage.addEventListener('click', () => (openPopup(popupPost), renderPost(title, link)));
   photoPost.querySelector('.photo-post__title').textContent = title;
   photoPost.querySelector('.photo-post__like-button').addEventListener('click', function(evt) {
     evt.target.classList.toggle('photo-post__like-button_active');
@@ -107,9 +111,9 @@ function loadInitialPosts() {
     }
   ];
   
-  for (let i = 0; i < initialPostsList.length; i++) {
-    addPost(initialPostsList[i].title, initialPostsList[i].link);
-  }
+  initialPostsList.forEach(function(item) {
+    addPost(item.title, item.link);
+  });
 }
 
 // Page main elemets
@@ -146,18 +150,12 @@ closeButtons.forEach((button) => {
 // Event listeners for Edit profile
 const profileName = document.querySelector('.profile__name');
 const profileVocation = document.querySelector('.profile__vocation');
-profileEditButton.addEventListener('click', () => openPopupEditProfile(popupEditProfile, profileName, profileVocation));
+profileEditButton.addEventListener('click', () => (renderEditProfile(profileName, profileVocation), openPopup(popupEditProfile)));
 editProfileForm.addEventListener('submit', (evt) => saveProfileInfo(evt, popupEditProfile, profileName, profileVocation));
-// Дорогой ревьюер, в прошлой итерации Вы указали на недопустимость навешивания слушателя валидации при каждом открытии формы
-// В моем коде такие обработчики удалялись при вызове функции closePopup, чтобы не допустить коллизий и неэффективного использования памяти
-// Но Вы также указали, что удаление нужно делать (!)правильно(!).
-// Понимаю возможность неверности использовавшегося ранее подхода, но валидацию оставить хотелось бы, если можно, поэтому повесил ее один раз тут и ниже.
-// Если нельзя, уберу на следующей итерации.
-// Это не вопрос и не просьба о помощи, так что, надеюсь, все корректно и законно =)
 editProfileForm.addEventListener('input', () => checkEmptyInputs(editProfileInputName.value, true, profileEditSaveButton));
 
 // Event listeners for New Post
-newPostAddButton.addEventListener('click', () => openPopupNewPost(popupNewPost));
+newPostAddButton.addEventListener('click', () => (renderNewPost(), openPopup(popupNewPost)));
 newPostForm.addEventListener('submit', (evt) => saveNewPost(evt, popupNewPost));
 newPostForm.addEventListener('input', () => checkEmptyInputs(newPostInputTitle.value, newPostInputLink.value, newPostSaveButton));
 
