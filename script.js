@@ -23,6 +23,7 @@ function openPopup(popup) {
 
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
+  
 }
 
 function renderEditProfile(name, vocation) {
@@ -142,9 +143,27 @@ const newPostSaveButton = popupNewPost.querySelector('.form__button');
 const closeButtons = document.querySelectorAll('.popup__close-button');
 
 // Event listeners for all Close popup buttons
-closeButtons.forEach((button) => {
-  const popup = button.closest('.popup');
-  button.addEventListener('click', () => closePopup(popup))
+// closeButtons.forEach((button) => {
+//   const popup = button.closest('.popup');
+//   button.addEventListener('click', () => closePopup(popup))
+// });
+
+// Event listener for closing popup by click on close-button or overlay
+const allPopups = document.querySelectorAll('.popup');
+allPopups.forEach((popup) => {
+  popup.addEventListener('click', (evt) => {
+    if (evt.target.classList.contains('popup__close-button') || evt.target.classList.contains('popup')) {
+      closePopup(popup);
+    }
+  });
+});
+
+// Event listener for closing popup by press Escape-button
+document.addEventListener('keydown', (evt) => {
+  const openedPopup = document.querySelector('.popup_opened');
+  if (evt.key === 'Escape' && openedPopup) {
+    closePopup(openedPopup);
+  }
 });
 
 // Event listeners for Edit profile
