@@ -19,7 +19,7 @@
   <main class="main">
 
     <section class="profile">
-      <img class="profile__avatar" src="./images/photo-jacques-cousteau.jpg" alt="Аватарка">
+      <div class="profile__avatar" style="background-image: url('../../../images/photo-jacques-cousteau.jpg')"></div>
       <div class="profile__info">
         <h1 class="profile__name">Жак-Ив Кусто</h1>
         <button class="profile__edit-button" type="button" aria-label="Редактировать"></button>
@@ -83,6 +83,17 @@
         <img class="view-post__image" src="" alt="">
         <figcaption class="view-post__caption"></figcaption>
       </figure>
+    </div>
+  </section>
+
+  <section class="popup popup_update-avatar">
+    <div class="popup__container">
+      <button class="popup__close-button" type="button" aria-label="Закрыть форму"></button>
+      <form class="form" name="update-avatar">
+        <h2 class="form__title">Обновить аватар</h2>
+        <input class="form__item form__item_el_link" type="text" name="link" placeholder="Ссылка на картинку" required>
+        <button class="form__button" type="submit">Сохранить</button>
+      </form>
     </div>
   </section>
 

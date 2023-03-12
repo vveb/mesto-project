@@ -23,7 +23,6 @@ function openPopup(popup) {
 
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
-  
 }
 
 function renderEditProfile(name, vocation) {
@@ -35,6 +34,12 @@ function renderNewPost() {
   newPostForm.reset();
   newPostSaveButton.disabled = true;
   newPostSaveButton.classList.add('form__button_disabled');
+}
+
+function renderUpdateAvatar() {
+  updateAvatarForm.reset();
+  updateAvatarSaveButton.disabled = true;
+  updateAvatarSaveButton.classList.add('form__button_disabled');
 }
 
 function renderPost(title, link) {
@@ -58,6 +63,19 @@ function saveNewPost(evt, popup) {
     newPostInputLink.value = 'Неверная ссылка!';
     newPostSaveButton.disabled = true;
     newPostSaveButton.classList.add('form__button_disabled');
+    return;
+  }
+  closePopup(popup);
+}
+
+function saveAvatar(evt, popup) {
+  evt.preventDefault();
+  if (validateURLString(updateAvatarLink.value)) {
+    profileAvatar.style.backgroundImage = `url(${updateAvatarLink.value})`;
+  } else {
+    updateAvatarLink.value = 'Неверная ссылка!';
+    updateAvatarSaveButton.disabled = true;
+    updateAvatarSaveButton.classList.add('form__button_disabled');
     return;
   }
   closePopup(popup);
@@ -119,12 +137,14 @@ function loadInitialPosts() {
 
 // Page main elemets
 const photoGrid = document.querySelector('.photo-grid');
+const profileAvatar = document.querySelector('.profile__avatar')
 const templatePhotoPost = document.querySelector('#template-photo-post').content;
 
 // Popups
 const popupEditProfile = document.querySelector('.popup_edit-profile');
 const popupNewPost = document.querySelector('.popup_new-post');
 const popupPost = document.querySelector('.popup_post');
+const popupUpdateAvatar = document.querySelector('.popup_update-avatar');
 
 // Forms
 const editProfileForm = popupEditProfile.querySelector('.form');
@@ -135,12 +155,20 @@ const newPostForm = popupNewPost.querySelector('.form');
 const newPostInputTitle = newPostForm.querySelector('.form__item_el_title');
 const newPostInputLink = newPostForm.querySelector('.form__item_el_link');
 
+const updateAvatarForm = popupUpdateAvatar.querySelector('.form');
+const updateAvatarLink = updateAvatarForm.querySelector('.form__item_el_link')
+
 // Buttons
 const profileEditButton = document.querySelector('.profile__edit-button');
 const profileEditSaveButton = popupEditProfile.querySelector('.form__button')
 const newPostAddButton = document.querySelector('.profile__add-button');
 const newPostSaveButton = popupNewPost.querySelector('.form__button');
-const closeButtons = document.querySelectorAll('.popup__close-button');
+// const closeButtons = document.querySelectorAll('.popup__close-button');
+const updateAvatarSaveButton = popupUpdateAvatar.querySelector('.form__button');
+
+// Elements of popup Post
+const imagePost = popupPost.querySelector('.view-post__image');
+const captionPost = popupPost.querySelector('.view-post__caption');
 
 // Event listeners for all Close popup buttons
 // closeButtons.forEach((button) => {
@@ -178,9 +206,10 @@ newPostAddButton.addEventListener('click', () => (renderNewPost(), openPopup(pop
 newPostForm.addEventListener('submit', (evt) => saveNewPost(evt, popupNewPost));
 newPostForm.addEventListener('input', () => checkEmptyInputs(newPostInputTitle.value, newPostInputLink.value, newPostSaveButton));
 
-// Elements of popup Post
-const imagePost = popupPost.querySelector('.view-post__image');
-const captionPost = popupPost.querySelector('.view-post__caption');
+// Event listeners for Update Avatar
+profileAvatar.addEventListener('click', () => (renderUpdateAvatar(), openPopup(popupUpdateAvatar)));
+updateAvatarForm.addEventListener('submit', (evt) => saveAvatar(evt, popupUpdateAvatar));
+updateAvatarForm.addEventListener('input', () => checkEmptyInputs(updateAvatarLink.value, true, updateAvatarSaveButton));
 
 // Оставил для себя, чтобы не забыть, что callback-функцию можно убрать в отдельную переменную
 // const callbackFunction = () => openPopup(popupEditProfile);
