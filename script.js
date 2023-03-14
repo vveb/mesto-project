@@ -146,17 +146,17 @@ const popupNewPost = document.querySelector('.popup_new-post');
 const popupPost = document.querySelector('.popup_post');
 const popupUpdateAvatar = document.querySelector('.popup_update-avatar');
 
-// Forms
-const editProfileForm = popupEditProfile.querySelector('.form');
-const editProfileInputName = editProfileForm.querySelector('.form__item_el_name');
-const editProfileInputVocation = editProfileForm.querySelector('.form__item_el_vocation');
+// Forms and forms' elements
+const editProfileForm = document.forms['edit-profile'];
+const editProfileInputName = editProfileForm.name;
+const editProfileInputVocation = editProfileForm.vocation;
 
-const newPostForm = popupNewPost.querySelector('.form');
-const newPostInputTitle = newPostForm.querySelector('.form__item_el_title');
-const newPostInputLink = newPostForm.querySelector('.form__item_el_link');
+const newPostForm = document.forms['new-post'];
+const newPostInputTitle = newPostForm.title;
+const newPostInputLink = newPostForm.link;
 
-const updateAvatarForm = popupUpdateAvatar.querySelector('.form');
-const updateAvatarLink = updateAvatarForm.querySelector('.form__item_el_link')
+const updateAvatarForm = document.forms['update-avatar'];
+const updateAvatarLink = updateAvatarForm.link;
 
 // Buttons
 const profileEditButton = document.querySelector('.profile__edit-button');
