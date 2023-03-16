@@ -7,10 +7,10 @@ function validateURLString(value) {
 function checkEmptyInputs(requiredValue0, requiredValue1, submitButton) {
   if (requiredValue0 && requiredValue1) {
     submitButton.disabled = false;
-    submitButton.classList.remove('form__button_disabled');
+    submitButton.classList.remove('form__submit_disabled');
   } else {
     submitButton.disabled = true;
-    submitButton.classList.add('form__button_disabled');
+    submitButton.classList.add('form__submit_disabled');
   }
 }
 
@@ -33,13 +33,13 @@ function renderEditProfile(name, vocation) {
 function renderNewPost() {
   newPostForm.reset();
   newPostSaveButton.disabled = true;
-  newPostSaveButton.classList.add('form__button_disabled');
+  newPostSaveButton.classList.add('form__submit_disabled');
 }
 
 function renderUpdateAvatar() {
   updateAvatarForm.reset();
   updateAvatarSaveButton.disabled = true;
-  updateAvatarSaveButton.classList.add('form__button_disabled');
+  updateAvatarSaveButton.classList.add('form__submit_disabled');
 }
 
 function renderPost(title, link) {
@@ -62,7 +62,7 @@ function saveNewPost(evt, popup) {
   } else {
     newPostInputLink.value = 'Неверная ссылка!';
     newPostSaveButton.disabled = true;
-    newPostSaveButton.classList.add('form__button_disabled');
+    newPostSaveButton.classList.add('form__submit_disabled');
     return;
   }
   closePopup(popup);
@@ -75,7 +75,7 @@ function saveAvatar(evt, popup) {
   } else {
     updateAvatarLink.value = 'Неверная ссылка!';
     updateAvatarSaveButton.disabled = true;
-    updateAvatarSaveButton.classList.add('form__button_disabled');
+    updateAvatarSaveButton.classList.add('form__submit_disabled');
     return;
   }
   closePopup(popup);
@@ -160,11 +160,11 @@ const updateAvatarLink = updateAvatarForm.link;
 
 // Buttons
 const profileEditButton = document.querySelector('.profile__edit-button');
-const profileEditSaveButton = popupEditProfile.querySelector('.form__button')
+const profileEditSaveButton = popupEditProfile.querySelector('.form__submit')
 const newPostAddButton = document.querySelector('.profile__add-button');
-const newPostSaveButton = popupNewPost.querySelector('.form__button');
+const newPostSaveButton = popupNewPost.querySelector('.form__submit');
 // const closeButtons = document.querySelectorAll('.popup__close-button');
-const updateAvatarSaveButton = popupUpdateAvatar.querySelector('.form__button');
+const updateAvatarSaveButton = popupUpdateAvatar.querySelector('.form__submit');
 
 // Elements of popup Post
 const imagePost = popupPost.querySelector('.view-post__image');

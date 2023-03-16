@@ -54,10 +54,10 @@
       <form class="form" name="edit-profile">
         <h2 class="form__title">Редактировать профиль</h2>
         <fieldset class="form__input-container">
-          <input class="form__item form__item_el_name" type="text" name="name" placeholder="Имя и фамилия" required>
-          <input class="form__item form__item_el_vocation" type="text" name="vocation" placeholder="Призвание">
+          <input class="form__item form__item_el_name" type="text" name="name" placeholder="Имя и фамилия" minlength="2" maxlength="40" required>
+          <input class="form__item form__item_el_vocation" type="text" name="vocation" placeholder="Призвание" minlength="2" maxlength="200" required>
         </fieldset>
-        <button class="form__button" type="submit">Сохранить</button>
+        <button class="form__submit" type="submit">Сохранить</button>
       </form>
     </div>
   </section>
@@ -71,7 +71,7 @@
           <input class="form__item form__item_el_title" type="text" name="title" placeholder="Название" required>
           <input class="form__item form__item_el_link" type="text" name="link" placeholder="Ссылка на картинку" required>
         </fieldset>
-        <button class="form__button" type="submit">Создать</button>
+        <button class="form__submit" type="submit">Создать</button>
       </form>
     </div>
   </section>
@@ -92,7 +92,7 @@
       <form class="form" name="update-avatar">
         <h2 class="form__title">Обновить аватар</h2>
         <input class="form__item form__item_el_link" type="text" name="link" placeholder="Ссылка на картинку" required>
-        <button class="form__button" type="submit">Сохранить</button>
+        <button class="form__submit" type="submit">Сохранить</button>
       </form>
     </div>
   </section>
