@@ -34,4 +34,23 @@ const initialPostsList = [
   }
 ];
 
-export { FormConfig, initialPostsList };
+const photoGrid = document.querySelector('.photo-grid');
+const editProfileForm = document.forms['edit-profile'];
+const profileAvatar = document.querySelector('.profile__avatar');
+const profileEditButton = document.querySelector('.profile__edit-button');
+const newPostAddButton = document.querySelector('.profile__add-button');
+const profileName = document.querySelector('.profile__name');
+const profileVocation = document.querySelector('.profile__vocation');
+const updateAvatarForm = document.forms['update-avatar'];
+
+export { FormConfig,
+  initialPostsList,
+  photoGrid,
+  editProfileForm,
+  profileAvatar,
+  profileEditButton,
+  newPostAddButton,
+  profileName,
+  profileVocation,
+  updateAvatarForm,
+}
