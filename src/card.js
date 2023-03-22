@@ -10,13 +10,13 @@ function handleLikeClick(evt) {
   evt.target.classList.toggle('photo-post__like-button_active');
 }
 
-export function createNewPost(title, link) {
+export function createNewPost({ name, link }) {
   const photoPost = templatePhotoPost.querySelector('.photo-post').cloneNode(true);
   const photoPostImage = photoPost.querySelector('.photo-post__image');
   photoPostImage.src = link;
-  photoPostImage.alt = title;
+  photoPostImage.alt = name;
   photoPostImage.addEventListener('click', handleCardImageClick);
-  photoPost.querySelector('.photo-post__title').textContent = title;
+  photoPost.querySelector('.photo-post__title').textContent = name;
   photoPost.querySelector('.photo-post__like-button').addEventListener('click', handleLikeClick);
   const deleteButton = photoPost.querySelector('.photo-post__delete-button');
     deleteButton.addEventListener('click', function() {

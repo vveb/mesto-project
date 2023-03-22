@@ -1,27 +1,20 @@
 import { profileAvatar,
-  editProfileForm,
   profileName,
   profileVocation,
-  updateAvatarForm,
 } from './constants.js';
 
-const editProfileInputName = editProfileForm.name;
-const editProfileInputVocation = editProfileForm.vocation;
-const updateAvatarLink = updateAvatarForm.elements['input-avatar-link'];
-
-function setProfileData() {
-  profileName.textContent = editProfileInputName.value;
-  profileVocation.textContent = editProfileInputVocation.value;
+function getProfileData() {
+  return { name: profileName.textContent, about: profileVocation.textContent };
 }
 
-function setProfileInputs() {
-  editProfileInputName.value = profileName.textContent;
-  editProfileInputVocation.value = profileVocation.textContent;
+function setProfileData({ name, about }) {
+  profileName.textContent = name;
+  profileVocation.textContent = about;
 }
 
-function setAvatarByLink() {
-  profileAvatar.style.backgroundImage = `url(${updateAvatarLink.value})`;
+function setProfileAvatar({ avatar }) {
+  profileAvatar.style.backgroundImage = `url(${avatar})`;
 }
 
-export { setProfileData, setProfileInputs, setAvatarByLink };
+export { setProfileData, getProfileData, setProfileAvatar };
 

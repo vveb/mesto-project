@@ -1,7 +1,7 @@
 import { resetFormValidation } from './validate-forms.js';
 import { FormConfig, editProfileForm, updateAvatarForm } from './constants.js';
 import { addPost } from './utils.js';
-import { setProfileData, setProfileInputs, setAvatarByLink } from './profile.js';
+import { setProfileData, getProfileData, setProfileAvatar } from './profile.js';
 
 const closeButtons = document.querySelectorAll('.popup__close-button');
 
@@ -19,6 +19,9 @@ const captionPost = popupPost.querySelector('.view-post__caption');
 //Inputs
 const newPostInputTitle = newPostForm.title;
 const newPostInputLink = newPostForm.link;
+const editProfileInputName = editProfileForm.name;
+const editProfileInputVocation = editProfileForm.vocation;
+const avatarInputLink = updateAvatarForm.elements['input-avatar-link'];
 
 const handleEscapeButton = (evt) => {
   const openedPopup = document.querySelector('.popup_opened');
@@ -46,9 +49,18 @@ function closePopup(popup) {
   document.removeEventListener('keydown', handleEscapeButton);
 }
 
+function setProfileInputs({ name, about }) {
+  editProfileInputName.value = name;
+  editProfileInputVocation.value = about;
+}
+
+function getProfileInputs() {
+  return {name: editProfileInputName.value, about: editProfileInputVocation.value};
+}
+
 function renderEditProfile() {
   editProfileForm.reset();
-  setProfileInputs();
+  setProfileInputs(getProfileData());
   resetFormValidation(editProfileForm, FormConfig);
 }
 
@@ -88,22 +100,29 @@ function handleUpdateAvatarClick() {
   openPopup(popupUpdateAvatar);
 }
 
-// Сделать "сеттеры" и "геттеры"
 function saveProfileInfo (evt) {
   evt.preventDefault();
-  setProfileData();
+  setProfileData(getProfileInputs());
   closePopup(popupEditProfile);
+}
+
+function getNewPostInputs() {
+  return { name: newPostInputTitle.value, link: newPostInputLink.value }
 }
 
 function saveNewPost(evt) {
   evt.preventDefault();
-  addPost(newPostInputTitle.value, newPostInputLink.value);
+  addPost(getNewPostInputs());
   closePopup(popupNewPost);
+}
+
+function getAvatarInput() {
+  return { avatar: avatarInputLink.value };
 }
 
 function saveAvatar(evt) {
   evt.preventDefault();
-  setAvatarByLink();
+  setProfileAvatar(getAvatarInput());
   closePopup(popupUpdateAvatar);
 }
 

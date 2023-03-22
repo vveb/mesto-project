@@ -14,13 +14,13 @@ import { handleEditProfileClick,
 } from './modal.js';
 import { enableFormValidation } from './validate-forms.js';
 
-export function addPost(title, link) {
-  photoGrid.prepend(createNewPost(title, link));
+export function addPost(data) {
+  photoGrid.prepend(createNewPost(data));
 }
 
 function loadInitialPosts() {
   initialPostsList.forEach(function(item) {
-    addPost(item.title, item.link);
+    addPost(item);
   });
 }
 

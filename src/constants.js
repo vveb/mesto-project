@@ -9,27 +9,27 @@ const FormConfig = {
 
 const initialPostsList = [
   {
-    title: 'Sacre Coeur',
+    name: 'Sacre Coeur',
     link: './images/sacre-coeur.jpg'
   },
   {
-    title: 'Лувр',
+    name: 'Лувр',
     link: './images/louvre.jpg'
   },
   {
-    title: 'Сена',
+    name: 'Сена',
     link: './images/la-seine.jpg'
   },
   {
-    title: 'Notre Dame',
+    name: 'Notre Dame',
     link: './images/notre-dame.jpg'
   },
   {
-    title: 'Триумфальная арка',
+    name: 'Триумфальная арка',
     link: './images/arc-de-triomph.jpg'
   },
   {
-    title: 'Эйфелева башня',
+    name: 'Эйфелева башня',
     link: './images/tour-eiffel.jpg'
   }
 ];
