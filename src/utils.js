@@ -1,7 +1,6 @@
 import { createNewPost } from './card.js';
 import {
   photoGrid,
-  initialPostsList,
   profileEditButton,
   newPostAddButton,
   profileAvatar,
@@ -13,6 +12,7 @@ import { handleEditProfileClick,
   initModals,
 } from './modal.js';
 import { enableFormValidation } from './validate-forms.js';
+import initialPostsList from './initial-posts.js';
 
 export function addPost(data) {
   photoGrid.prepend(createNewPost(data));

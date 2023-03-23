@@ -1,0 +1,50 @@
+.profile__avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 60px;
+  box-sizing: border-box;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
+  background-image: url('../../../images/photo-jacques-cousteau.jpg');
+}
+
+.profile__avatar:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #000;
+  background-position: center;
+  opacity: 0;
+  transition: opacity .3s ease;
+  border-radius: inherit;
+}
+
+.profile__avatar:hover:before {
+  opacity: .8;
+}
+
+.profile__avatar:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: url('../../../images/pencil-icon.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  visibility: hidden;
+  transform: scale(0);
+  transition: visibility .3s ease, transform .3s ease;
+  border-radius: inherit;
+}
+
+.profile__avatar:hover:after {
+  visibility: visible;
+  transform: scale(1);
+}
