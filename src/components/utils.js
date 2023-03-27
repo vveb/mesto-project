@@ -4,7 +4,7 @@ import {
   profileEditButton,
   newPostAddButton,
   profileAvatar,
-  FormConfig,
+  formConfig,
 } from './constants.js';
 import { handleEditProfileClick,
   handleNewPostClick,
@@ -34,5 +34,5 @@ export function initApp() {
   loadInitialPosts();
   initMainScreen();
   initModals();
-  enableFormValidation(FormConfig);
+  enableFormValidation(formConfig);
 }

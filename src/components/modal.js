@@ -1,5 +1,5 @@
 import { resetFormValidation } from './validate-forms.js';
-import { FormConfig, editProfileForm, updateAvatarForm } from './constants.js';
+import { formConfig, editProfileForm, updateAvatarForm } from './constants.js';
 import { addPost } from './utils.js';
 import { setProfileData, getProfileData, setProfileAvatar } from './profile.js';
 
@@ -61,7 +61,7 @@ function getProfileInputs() {
 function renderEditProfile() {
   editProfileForm.reset();
   setProfileInputs(getProfileData());
-  resetFormValidation(editProfileForm, FormConfig);
+  resetFormValidation(editProfileForm, formConfig);
 }
 
 function handleEditProfileClick() {
@@ -82,7 +82,7 @@ function openPost(cardValues) {
 
 function renderNewPost() {
   newPostForm.reset();
-  resetFormValidation(newPostForm, FormConfig);
+  resetFormValidation(newPostForm, formConfig);
 }
 
 function handleNewPostClick() {
@@ -92,7 +92,7 @@ function handleNewPostClick() {
 
 function renderUpdateAvatar() {
   updateAvatarForm.reset();
-  resetFormValidation(updateAvatarForm, FormConfig);
+  resetFormValidation(updateAvatarForm, formConfig);
 }
 
 function handleUpdateAvatarClick() {

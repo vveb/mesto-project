@@ -1,4 +1,4 @@
-const FormConfig = {
+const formConfig = {
   formSelector: '.form',
   inputSelector: '.form__input',
   submitButtonSelector: '.form__submit',
@@ -16,7 +16,7 @@ const profileName = document.querySelector('.profile__name');
 const profileVocation = document.querySelector('.profile__vocation');
 const updateAvatarForm = document.forms['update-avatar'];
 
-export { FormConfig,
+export { formConfig,
   photoGrid,
   editProfileForm,
   profileAvatar,
