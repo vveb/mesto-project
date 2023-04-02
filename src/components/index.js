@@ -1,7 +1,6 @@
 import '../pages/index.css'
 import {
   formConfig,
-  closeButtons,
   photoGrid,
   popups,
   forms,
@@ -13,11 +12,11 @@ import {
   newPostAddButton,
   profileAvatar,
 } from './constants.js';
-import { openPopup, closePopup, handlePopupOverlayClick } from './modal.js'
+import { openPopup, closePopup } from './modal.js'
 import { setProfileData, getProfileData, setProfileAvatar } from './profile.js'
 import { createNewPost, setLike } from './card.js'
 import { enableFormValidation, resetFormValidation } from './validate-forms';
-import { renderLoading } from './utils.js'
+import { renderLoading, handleError } from './utils.js'
 import { api } from './api.js'
 
 //profile processing
@@ -41,7 +40,7 @@ function handleEditProfileClick() {
   openPopup(popups.popupEditProfile);
 }
 
-function saveProfileInfo (evt) {
+function saveProfileInfo(evt) {
   evt.preventDefault();
   editProfile(getProfileInputs());
   closePopup(popups.popupEditProfile);
@@ -51,7 +50,7 @@ function editProfile(data) {
   renderLoading(true, submitButtons.editProfileSubmitButton, 'Сохранение...');
   api.editProfileInfo(data)
     .then(setProfileData)
-    .catch(console.dir)
+    .catch(handleError)
     .finally(() => {
       renderLoading(false, submitButtons.editProfileSubmitButton);
     });
@@ -60,7 +59,7 @@ function editProfile(data) {
 //new post processing
 function renderNewPost() {
   forms.newPostForm.reset();
-  // resetFormValidation(forms.newPostForm, formConfig);
+  resetFormValidation(forms.newPostForm, formConfig);
 }
 
 function handleNewPostClick() {
@@ -86,7 +85,7 @@ function addNewPost(data) {
   renderLoading(true, submitButtons.newPostSubmitButton, 'Сохранение...');
   api.addNewCard(data)
     .then(addPost)
-    .catch(console.dir)
+    .catch(handleError)
     .finally(() => {
       renderLoading(false, submitButtons.newPostSubmitButton);
     })
@@ -114,10 +113,10 @@ function saveAvatar(evt) {
 }
 
 function editAvatar(data) {
-  renderLoading(true, submitButtons.editAvatarSubmitButton, 'Сохранение...')
+  renderLoading(true, submitButtons.editAvatarSubmitButton, 'Сохранение...');
   api.editProfileAvatar(data)
   .then(setProfileAvatar)
-  .catch(console.dir) //Здесь можно дописать функцию-коллбэк, которая будет выводить message ошибки в отдельное модальное окно
+  .catch(handleError)
   .finally(() => {
     renderLoading(false, submitButtons.editAvatarSubmitButton);
   });
@@ -150,7 +149,7 @@ export function handleLikeClick(evt) {
 function editLike(cardData) {
   api.toggleLike({ cardId: cardData.id, isLiked: cardData.likes.includes(mainUserId) })
     .then(setLike)
-    .catch(console.dir);
+    .catch(handleError);
 }
 
 photoGrid.addEventListener('click', handleLikeClick);
@@ -163,12 +162,12 @@ export function handleDeleteClick(evt) {
 }
 
 function deleteCard(id) {
-  renderLoading(true, submitButtons.deleteSubmitButton, 'Удаление...')
+  renderLoading(true, submitButtons.deleteSubmitButton, 'Удаление...');
   api.deleteCardData(id)
   .then(() => {
     document.getElementById(id).remove();
   })
-  .catch(console.dir)
+  .catch(handleError)
   .finally(() => {
     renderLoading(false, submitButtons.deleteSubmitButton);
   });
@@ -189,7 +188,7 @@ function loadInitialData() {
         photoGrid.append(createNewPost(item, mainUserId));
       });
     })
-    .catch(console.dir);
+    .catch(handleError);
 }
 
 function initMainScreen() {
@@ -202,24 +201,23 @@ function initModals() {
   forms.editProfileForm.addEventListener('submit', saveProfileInfo);
   forms.newPostForm.addEventListener('submit', saveNewPost);
   forms.editAvatarForm.addEventListener('submit', saveAvatar);
-  closeButtons.forEach((button) => {
-    const popup = button.closest('.popup');
-    button.addEventListener('click', () => closePopup(popup));
-    popup.addEventListener('click', handlePopupOverlayClick);
-  });
   forms.deleteSubmitForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
     deleteCard(localStorage.getItem('cardIdToDelete'));
     localStorage.removeItem('cardIdToDelete');
     closePopup(popups.popupDeleteSubmit);
   });
+  forms.errorForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    closePopup(popups.popupError);
+  })
 }
 
 function initApp() {
   loadInitialData();
   initMainScreen();
   initModals();
-  // enableFormValidation(formConfig);
+  enableFormValidation(formConfig);
 }
 
 initApp();

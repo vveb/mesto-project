@@ -13,12 +13,14 @@ const popupNewPost = document.querySelector('.popup_new-post');
 const popupEditAvatar = document.querySelector('.popup_update-avatar');
 const popupPost = document.querySelector('.popup_post');
 const popupDeleteSubmit = document.querySelector('.popup_delete-submit');
+const popupError = document.querySelector('.popup_error');
 
 //forms
 const editProfileForm = document.forms['edit-profile'];
 const newPostForm = document.forms['new-post'];
 const editAvatarForm = document.forms['update-avatar'];
 const deleteSubmitForm = document.forms['delete-submit'];
+const errorForm = document.forms['error-view'];
 
 //view post elements
 const imagePost = popupPost.querySelector('.view-post__image');
@@ -50,6 +52,8 @@ const newPostAddButton = document.querySelector('.profile__add-button');
 const profileName = document.querySelector('.profile__name');
 const profileVocation = document.querySelector('.profile__vocation');
 
+const errorTextBox = document.getElementById('error-textbox');
+
 const serverURL = 'https://nomoreparties.co/v1/plus-cohort-22';
 const endpointURLs = {
   profile: `${serverURL}/users/me`,
@@ -69,6 +73,7 @@ export const popups = {
   popupEditAvatar,
   popupPost,
   popupDeleteSubmit,
+  popupError,
 }
 
 export const forms = {
@@ -76,6 +81,7 @@ export const forms = {
   newPostForm,
   editAvatarForm,
   deleteSubmitForm,
+  errorForm,
 }
 
 export const submitButtons = {
@@ -104,6 +110,7 @@ export { formConfig,
   imagePost,
   captionPost,
   templatePhotoPost,
+  errorTextBox,
   requestHeaders,
   endpointURLs,
 }

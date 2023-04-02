@@ -1,3 +1,5 @@
+import { closeButtons } from './constants.js'
+
 const handleEscapeButton = (evt) => {
   const openedPopup = document.querySelector('.popup_opened');
   if (evt.key === 'Escape' && openedPopup) {
@@ -24,8 +26,13 @@ function closePopup(popup) {
   document.removeEventListener('keydown', handleEscapeButton);
 }
 
+closeButtons.forEach((button) => {
+  const popup = button.closest('.popup');
+  button.addEventListener('click', () => closePopup(popup));
+  popup.addEventListener('click', handlePopupOverlayClick);
+});
+
 export {
-  handlePopupOverlayClick,
   openPopup,
   closePopup,
 };

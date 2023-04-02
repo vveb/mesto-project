@@ -47,6 +47,7 @@
 @import url('../blocks/form/__input-error/_active/form__input-error_active.css');
 @import url('../blocks/form/__title/form__title.css');
 @import url('../blocks/form/__title/_short-padding/form__titile_short-padding.css');
+@import url('../blocks/form/__error-textbox/form__error-textbox.css');
 
 @import url('../blocks/view-post/view-post.css');
 @import url('../blocks/view-post/__image/view-post__image.css');
