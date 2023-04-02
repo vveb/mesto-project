@@ -1,26 +1,21 @@
-import { openPost, openPopup, popupDeleteSubmit } from './modal.js';
-import { editLike } from './utils.js'
-import { photoGrid } from './constants.js';
+import { handleCardImageClick, handleDeleteClick } from './index.js'
+import { templatePhotoPost } from './constants.js';
 
-const templatePhotoPost = document.querySelector('#template-photo-post').content;
-
-function handleCardImageClick(evt) {
-  openPost({ title: evt.target.alt, link: evt.target.src });
-}
-
-function handleLikeClick(evt) {
-  if (evt.target.classList.contains('photo-post__like-button')) {
-    const card = evt.target.closest('.photo-post');
-    editLike(card);
+function renderLikes(card, likes) {
+  const photoPostlikesCount = card.querySelector('.photo-post__likes-count');
+  const photoPostLikeButton = card.querySelector('.photo-post__like-button');
+  photoPostlikesCount.textContent = likes.length;
+  if (likes.includes(card.userId)) {
+    photoPostLikeButton.classList.add('photo-post__like-button_active');
+  } else {
+    photoPostLikeButton.classList.remove('photo-post__like-button_active');
   }
 }
 
-photoGrid.addEventListener('click', handleLikeClick);
-
-function handleDeleteClick(evt) {
-  const { id } = evt.target.closest('.photo-post');
-  localStorage.setItem('cardIdToDelete', id);
-  openPopup(popupDeleteSubmit);
+export function setLike(card) {
+  const newCard = document.getElementById(card._id);
+  newCard.likes = card.likes.map((user) => user._id);
+  renderLikes(newCard, newCard.likes);
 }
 
 export function createNewPost({ name, link, owner, likes, _id }, mainUserId) {
@@ -42,21 +37,4 @@ export function createNewPost({ name, link, owner, likes, _id }, mainUserId) {
     deleteButton.remove();
   }
   return photoPost;
-}
-
-function renderLikes(card, likes) {
-  const photoPostlikesCount = card.querySelector('.photo-post__likes-count');
-  const photoPostLikeButton = card.querySelector('.photo-post__like-button');
-  photoPostlikesCount.textContent = likes.length;
-  if (likes.includes(card.userId)) {
-    photoPostLikeButton.classList.add('photo-post__like-button_active');
-  } else {
-    photoPostLikeButton.classList.remove('photo-post__like-button_active');
-  }
-}
-
-export function setLike(card) {
-  const newCard = document.getElementById(card._id);
-  newCard.likes = card.likes.map((user) => user._id);
-  renderLikes(newCard, newCard.likes);
 }

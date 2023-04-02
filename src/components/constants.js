@@ -7,16 +7,48 @@ const formConfig = {
   errorClass: 'form__input-error_active'
 }
 
-const photoGrid = document.querySelector('.photo-grid');
+//popups
+const popupEditProfile = document.querySelector('.popup_edit-profile');
+const popupNewPost = document.querySelector('.popup_new-post');
+const popupEditAvatar = document.querySelector('.popup_update-avatar');
+const popupPost = document.querySelector('.popup_post');
+const popupDeleteSubmit = document.querySelector('.popup_delete-submit');
+
+//forms
 const editProfileForm = document.forms['edit-profile'];
+const newPostForm = document.forms['new-post'];
+const editAvatarForm = document.forms['update-avatar'];
+const deleteSubmitForm = document.forms['delete-submit'];
+
+//view post elements
+const imagePost = popupPost.querySelector('.view-post__image');
+const captionPost = popupPost.querySelector('.view-post__caption');
+
+//submit-buttons
 const editProfileSubmitButton = editProfileForm['submit-button'];
+const newPostSubmitButton = newPostForm['submit-button'];
+const editAvatarSubmitButton = editAvatarForm['submit-button'];
+const deleteSubmitButton = deleteSubmitForm['submit-button'];
+
+//all close buttons
+const closeButtons = document.querySelectorAll('.popup__close-button');
+
+//inputs
+const newPostInputTitle = newPostForm.title;
+const newPostInputLink = newPostForm.link;
+const editProfileInputName = editProfileForm.name;
+const editProfileInputVocation = editProfileForm.vocation;
+const avatarInputLink = editAvatarForm.elements['input-avatar-link'];
+
+const photoGrid = document.querySelector('.photo-grid');
+
+const templatePhotoPost = document.querySelector('#template-photo-post').content;
+
 const profileAvatar = document.querySelector('.profile__avatar');
 const profileEditButton = document.querySelector('.profile__edit-button');
 const newPostAddButton = document.querySelector('.profile__add-button');
 const profileName = document.querySelector('.profile__name');
 const profileVocation = document.querySelector('.profile__vocation');
-const updateAvatarForm = document.forms['update-avatar'];
-const updateAvatarSubmitButton = updateAvatarForm['submit-button']
 
 const serverURL = 'https://nomoreparties.co/v1/plus-cohort-22';
 const endpointURLs = {
@@ -31,17 +63,47 @@ const requestHeaders = {
   "Content-Type": "application/json",
 }
 
+export const popups = {
+  popupEditProfile,
+  popupNewPost,
+  popupEditAvatar,
+  popupPost,
+  popupDeleteSubmit,
+}
+
+export const forms = {
+  editProfileForm,
+  newPostForm,
+  editAvatarForm,
+  deleteSubmitForm,
+}
+
+export const submitButtons = {
+  editProfileSubmitButton,
+  newPostSubmitButton,
+  editAvatarSubmitButton,
+  deleteSubmitButton,
+}
+
+export const formInputs = {
+  newPostInputTitle,
+  newPostInputLink,
+  editProfileInputName,
+  editProfileInputVocation,
+  avatarInputLink,
+}
+
 export { formConfig,
   photoGrid,
-  editProfileForm,
   profileAvatar,
   profileEditButton,
   newPostAddButton,
   profileName,
   profileVocation,
-  updateAvatarForm,
+  closeButtons,
+  imagePost,
+  captionPost,
+  templatePhotoPost,
   requestHeaders,
   endpointURLs,
-  editProfileSubmitButton,
-  updateAvatarSubmitButton,
 }
