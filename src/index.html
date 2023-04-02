@@ -35,7 +35,10 @@
           <img class="photo-post__image" src="" alt="">
           <div class="photo-post__caption">
             <h2 class="photo-post__title"></h2>
-            <button class="photo-post__like-button" type="button" name="like" aria-label="Нравится"></button>
+            <div class="photo-post__likes">
+              <button class="photo-post__like-button" type="button" name="like" aria-label="Нравится"></button>
+              <p class="photo-post__likes-count">5</p>
+            </div>
           </div>
         </article>
       </template>
@@ -63,7 +66,7 @@
           data-alphabet-error="Разрешены только латинские и кириллические буквы, дефис и пробел.">
           <span class="form__input-error input-vocation-error" id="input-vocation-error"></span>
         </fieldset>
-        <button class="form__submit" type="submit">Сохранить</button>
+        <button class="form__submit" name="submit-button" type="submit">Сохранить</button>
       </form>
     </div>
   </div>
@@ -82,7 +85,7 @@
           data-url-error="Введите ссылку." required>
           <span class="form__input-error input-link-error" id="input-link-error"></span>
         </fieldset>
-        <button class="form__submit" type="submit">Создать</button>
+        <button class="form__submit" name="submit-button" type="submit">Создать</button>
       </form>
     </div>
   </div>
@@ -105,7 +108,17 @@
         <input class="form__input" id="input-avatar-link" type="url" name="avatar-link" placeholder="Ссылка на картинку"
         data-url-error="Введите ссылку." required>
         <span class="form__input-error input-avatar-link-error" id="input-avatar-link-error"></span>
-        <button class="form__submit" type="submit">Сохранить</button>
+        <button class="form__submit" name="submit-button" type="submit">Сохранить</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="popup popup_delete-submit">
+    <div class="popup__container">
+      <button class="popup__close-button" type="button" aria-label="Закрыть форму"></button>
+      <form class="form" name="delete-submit">
+        <h2 class="form__title form__title_short-padding">Вы уверены?</h2>
+        <button class="form__submit form__submit_no-margin" name="submit-button" type="submit">Да</button>
       </form>
     </div>
   </div>

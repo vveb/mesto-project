@@ -22,8 +22,10 @@
 @import url('../blocks/photo-post/__image/photo-post__image.css');
 @import url('../blocks/photo-post/__caption/photo-post__caption.css');
 @import url('../blocks/photo-post/__title/photo-post__title.css');
+@import url('../blocks/photo-post/__likes/photo-post__likes.css');
 @import url('../blocks/photo-post/__like-button/photo-post__like-button.css');
 @import url('../blocks/photo-post/__like-button/_active/photo-post__like-button_active.css');
+@import url('../blocks/photo-post/__likes-count/photo-post__likes-count.css');
 
 @import url('../blocks/footer/footer.css');
 @import url('../blocks/footer/__copyright/footer__copyright.css');
@@ -37,12 +39,14 @@
 @import url('../blocks/form/form.css');
 @import url('../blocks/form/__submit/form__submit.css');
 @import url('../blocks/form/__submit/_disabled/form__submit_disabled.css');
+@import url('../blocks/form/__submit/_no-margin/form__submit_no-margin.css');
 @import url('../blocks/form/__input-container/form__input-container.css');
 @import url('../blocks/form/__input/form__input.css');
 @import url('../blocks/form/__input/_invalid/form__input_invalid.css');
 @import url('../blocks/form/__input-error/form__input-error.css');
 @import url('../blocks/form/__input-error/_active/form__input-error_active.css');
 @import url('../blocks/form/__title/form__title.css');
+@import url('../blocks/form/__title/_short-padding/form__titile_short-padding.css');
 
 @import url('../blocks/view-post/view-post.css');
 @import url('../blocks/view-post/__image/view-post__image.css');

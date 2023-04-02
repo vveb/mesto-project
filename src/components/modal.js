@@ -1,7 +1,7 @@
 import { resetFormValidation } from './validate-forms.js';
 import { formConfig, editProfileForm, updateAvatarForm } from './constants.js';
-import { addPost } from './utils.js';
-import { setProfileData, getProfileData, setProfileAvatar } from './profile.js';
+import { addNewPost, editProfile, editAvatar, deleteCard } from './utils.js';
+import { getProfileData } from './profile.js';
 
 const closeButtons = document.querySelectorAll('.popup__close-button');
 
@@ -10,11 +10,15 @@ const popupEditProfile = document.querySelector('.popup_edit-profile');
 const popupNewPost = document.querySelector('.popup_new-post');
 const popupUpdateAvatar = document.querySelector('.popup_update-avatar');
 const popupPost = document.querySelector('.popup_post');
+const popupDeleteSubmit = document.querySelector('.popup_delete-submit');
 
 // Forms and forms' elements
 const newPostForm = document.forms['new-post'];
+const newPostSubmitButton = newPostForm['submit-button'];
 const imagePost = popupPost.querySelector('.view-post__image');
 const captionPost = popupPost.querySelector('.view-post__caption');
+const deleteSubmitForm = document.forms['delete-submit'];
+const deleteSubmitButton = deleteSubmitForm['submit-button'];
 
 //Inputs
 const newPostInputTitle = newPostForm.title;
@@ -102,7 +106,7 @@ function handleUpdateAvatarClick() {
 
 function saveProfileInfo (evt) {
   evt.preventDefault();
-  setProfileData(getProfileInputs());
+  editProfile(getProfileInputs());
   closePopup(popupEditProfile);
 }
 
@@ -112,7 +116,8 @@ function getNewPostInputs() {
 
 function saveNewPost(evt) {
   evt.preventDefault();
-  addPost(getNewPostInputs());
+  addNewPost(getNewPostInputs(), evt);
+  
   closePopup(popupNewPost);
 }
 
@@ -122,7 +127,7 @@ function getAvatarInput() {
 
 function saveAvatar(evt) {
   evt.preventDefault();
-  setProfileAvatar(getAvatarInput());
+  editAvatar(getAvatarInput());
   closePopup(popupUpdateAvatar);
 }
 
@@ -135,6 +140,22 @@ export function initModals() {
     button.addEventListener('click', () => closePopup(popup));
     popup.addEventListener('click', handlePopupOverlayClick);
   });
+  deleteSubmitForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    deleteCard(localStorage.getItem('cardIdToDelete'));
+    localStorage.removeItem('cardIdToDelete');
+    closePopup(popupDeleteSubmit);
+  });
 }
 
-export { handleEditProfileClick, handleNewPostClick, handleUpdateAvatarClick, openPost};
+export { handleEditProfileClick,
+  handleNewPostClick,
+  handleUpdateAvatarClick,
+  openPost,
+  openPopup,
+  popupDeleteSubmit,
+  newPostSubmitButton,
+  deleteSubmitButton
+};
+
+//Унести в index.js все то, что я бы не оставил в абстрактном классе popup
