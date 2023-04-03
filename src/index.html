@@ -57,14 +57,14 @@
       <form class="form" name="edit-profile" novalidate>
         <h2 class="form__title">Редактировать профиль</h2>
         <fieldset class="form__input-container">
-          <input class="form__input" id="input-name" type="text" name="name" placeholder="Имя и фамилия"
+          <input class="form__input" id="profile-input-name" type="text" name="name" placeholder="Имя и фамилия"
           minlength="2" maxlength="40" pattern="^[a-zA-zа-яА-я\s\-]+$"
           data-alphabet-error="Разрешены только латинские и кириллические буквы, дефис и пробел." required>
-          <span class="form__input-error input-name-error" id="input-name-error"></span>
-          <input class="form__input" id="input-vocation" type="text" name="vocation" placeholder="Призвание"
+          <span class="form__input-error" id="profile-input-name-error"></span>
+          <input class="form__input" id="profile-input-about" type="text" name="vocation" placeholder="Призвание"
           minlength="2" maxlength="200" pattern="^[a-zA-zа-яА-я\s\-]+$" required
           data-alphabet-error="Разрешены только латинские и кириллические буквы, дефис и пробел.">
-          <span class="form__input-error input-vocation-error" id="input-vocation-error"></span>
+          <span class="form__input-error" id="profile-input-about-error"></span>
         </fieldset>
         <button class="form__submit" name="submit-button" type="submit">Сохранить</button>
       </form>
@@ -77,13 +77,13 @@
       <form class="form" name="new-post" novalidate>
         <h2 class="form__title">Новое место</h2>
         <fieldset class="form__input-container">
-          <input class="form__input" id="input-title" type="text" name="title" placeholder="Название"
+          <input class="form__input" id="place-input-name" type="text" name="title" placeholder="Название"
           minlength="2" maxlength="30" pattern="^[a-zA-zа-яА-я\s\-]+$"
           data-alphabet-error="Разрешены только латинские и кириллические буквы, дефис и пробел." required>
-          <span class="form__input-error input-title-error" id="input-title-error"></span>
-          <input class="form__input" id="input-link" type="url" name="link" placeholder="Ссылка на картинку"
+          <span class="form__input-error" id="place-input-name-error"></span>
+          <input class="form__input" id="place-input-link" type="url" name="link" placeholder="Ссылка на картинку"
           data-url-error="Введите ссылку." required>
-          <span class="form__input-error input-link-error" id="input-link-error"></span>
+          <span class="form__input-error" id="place-input-link-error"></span>
         </fieldset>
         <button class="form__submit" name="submit-button" type="submit">Создать</button>
       </form>
@@ -105,9 +105,9 @@
       <button class="popup__close-button" type="button" aria-label="Закрыть форму"></button>
       <form class="form" name="update-avatar" novalidate>
         <h2 class="form__title">Обновить аватар</h2>
-        <input class="form__input" id="input-avatar-link" type="url" name="avatar-link" placeholder="Ссылка на картинку"
+        <input class="form__input" id="avatar-input-avatar" type="url" name="avatar-link" placeholder="Ссылка на картинку"
         data-url-error="Введите ссылку." required>
-        <span class="form__input-error input-avatar-link-error" id="input-avatar-link-error"></span>
+        <span class="form__input-error" id="avatar-input-avatar-error"></span>
         <button class="form__submit" name="submit-button" type="submit">Сохранить</button>
       </form>
     </div>

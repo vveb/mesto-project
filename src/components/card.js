@@ -1,8 +1,6 @@
 import { handleCardImageClick, handleDeleteClick, editLike } from './index.js'
 import { templatePhotoPost } from './constants.js';
 
-
-
 export function createNewPost({ name, link, owner, likes, _id }, mainUserId) {
   const photoPost = templatePhotoPost.querySelector('.photo-post').cloneNode(true);
   photoPost.id = _id;
@@ -18,7 +16,7 @@ export function createNewPost({ name, link, owner, likes, _id }, mainUserId) {
   const photoPostlikesCount = photoPost.querySelector('.photo-post__likes-count');
   function renderLikes() {
     photoPostlikesCount.textContent = photoPost.likes.length;
-    if (photoPost.likes.includes(card.userId)) {
+    if (photoPost.likes.includes(photoPost.userId)) {
       photoPostLikeButton.classList.add('photo-post__like-button_active');
     } else {
       photoPostLikeButton.classList.remove('photo-post__like-button_active');
@@ -26,13 +24,13 @@ export function createNewPost({ name, link, owner, likes, _id }, mainUserId) {
   }
   function setLikes(card) {
     photoPost.likes = card.likes.map((user) => user._id);
-    renderLikes(newCard, newCard.likes);
+    renderLikes();
   }
   function handleLikeClick() {
     editLike(photoPost, setLikes);
   }
   photoPostLikeButton.addEventListener('click', handleLikeClick);
-  renderLikes(photoPost, photoPost.likes);
+  renderLikes();
   const deleteButton = photoPost.querySelector('.photo-post__delete-button');
   if (photoPost.ownerId === photoPost.userId) {
     deleteButton.addEventListener('click', handleDeleteClick);

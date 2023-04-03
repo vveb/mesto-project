@@ -17,9 +17,25 @@ function showError(errMessage) {
 }
 
 export function handleError(err) {
+  console.dir(err);
   if (err.statusCode) {
     showError(err.message);
   } else {
     showError('Connection trouble, check your network');
   }
+}
+
+export function getInputsData(inputsArray, formPrefix) {
+  const prefixLength = formPrefix.length;
+  return inputsArray.reduce((acc, input) => {
+    acc[input.id.slice(prefixLength)] = input.value;
+    return acc;
+  }, {});
+}
+
+export function setInputsData(inputsArray, formPrefix, data) {
+  const prefixLength = formPrefix.length;
+  inputsArray.forEach((input) => {
+    input.value = data[input.id.slice(prefixLength)];
+  })
 }

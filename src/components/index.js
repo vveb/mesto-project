@@ -4,34 +4,30 @@ import {
   photoGrid,
   popups,
   forms,
-  formInputs,
   submitButtons,
   imagePost,
   captionPost,
   profileEditButton,
   newPostAddButton,
   profileAvatar,
+  avatarFormInputsArray,
+  newPostFormInputsArray,
+  editProfileFormInputsArray,
+  avatarFormPrefix,
+  newPostFormPrefix,
+  editProfileFormPrefix,
 } from './constants.js';
 import { openPopup, closePopup } from './modal.js'
 import { setProfileData, getProfileData, setProfileAvatar } from './profile.js'
-import { createNewPost, setLike } from './card.js'
+import { createNewPost } from './card.js'
 import { enableFormValidation, resetFormValidation } from './validate-forms';
-import { renderLoading, handleError } from './utils.js'
+import { renderLoading, handleError, getInputsData, setInputsData } from './utils.js'
 import { api } from './api.js'
 
 //profile processing
-function setProfileInputs({ name, about }) {
-  formInputs.editProfileInputName.value = name;
-  formInputs.editProfileInputVocation.value = about;
-}
-
-function getProfileInputs() {
-  return {name: formInputs.editProfileInputName.value, about: formInputs.editProfileInputVocation.value};
-}
-
 function renderEditProfile() {
   forms.editProfileForm.reset();
-  setProfileInputs(getProfileData());
+  setInputsData(editProfileFormInputsArray, editProfileFormPrefix, getProfileData());
   resetFormValidation(forms.editProfileForm, formConfig);
 }
 
@@ -42,7 +38,7 @@ function handleEditProfileClick() {
 
 function saveProfileInfo(evt) {
   evt.preventDefault();
-  editProfile(getProfileInputs());
+  editProfile(getInputsData(editProfileFormInputsArray, editProfileFormPrefix));
   closePopup(popups.popupEditProfile);
 }
 
@@ -67,13 +63,9 @@ function handleNewPostClick() {
   openPopup(popups.popupNewPost);
 }
 
-function getNewPostInputs() {
-  return { name: formInputs.newPostInputTitle.value, link: formInputs.newPostInputLink.value }
-}
-
 function saveNewPost(evt) {
   evt.preventDefault();
-  addNewPost(getNewPostInputs(), evt);
+  addNewPost(getInputsData(newPostFormInputsArray, newPostFormPrefix), evt);
   closePopup(popups.popupNewPost);
 }
 
@@ -102,13 +94,9 @@ function handleEditAvatarClick() {
   openPopup(popups.popupEditAvatar);
 }
 
-function getAvatarInput() {
-  return { avatar: formInputs.avatarInputLink.value };
-}
-
 function saveAvatar(evt) {
   evt.preventDefault();
-  editAvatar(getAvatarInput());
+  editAvatar(getInputsData(avatarFormInputsArray, avatarFormPrefix));
   closePopup(popups.popupEditAvatar);
 }
 

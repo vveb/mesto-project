@@ -35,12 +35,15 @@ const deleteSubmitButton = deleteSubmitForm['submit-button'];
 //all close buttons
 const closeButtons = document.querySelectorAll('.popup__close-button');
 
-//inputs
-const newPostInputTitle = newPostForm.title;
-const newPostInputLink = newPostForm.link;
-const editProfileInputName = editProfileForm.name;
-const editProfileInputVocation = editProfileForm.vocation;
-const avatarInputLink = editAvatarForm.elements['input-avatar-link'];
+//input arrays
+const avatarFormInputsArray = Array.from(editAvatarForm.querySelectorAll('.form__input'));
+const newPostFormInputsArray = Array.from(newPostForm.querySelectorAll('.form__input'));
+const editProfileFormInputsArray = Array.from(editProfileForm.querySelectorAll('.form__input'));
+
+//prefixes
+const avatarFormPrefix = 'avatar-input-';
+const newPostFormPrefix = 'place-input-';
+const editProfileFormPrefix = 'profile-input-';
 
 const photoGrid = document.querySelector('.photo-grid');
 
@@ -91,14 +94,6 @@ export const submitButtons = {
   deleteSubmitButton,
 }
 
-export const formInputs = {
-  newPostInputTitle,
-  newPostInputLink,
-  editProfileInputName,
-  editProfileInputVocation,
-  avatarInputLink,
-}
-
 export { formConfig,
   photoGrid,
   profileAvatar,
@@ -113,4 +108,10 @@ export { formConfig,
   errorTextBox,
   requestHeaders,
   endpointURLs,
+  avatarFormInputsArray,
+  newPostFormInputsArray,
+  editProfileFormInputsArray,
+  avatarFormPrefix,
+  newPostFormPrefix,
+  editProfileFormPrefix,
 }
