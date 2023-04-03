@@ -1,9 +1,8 @@
 import { closeButtons } from './constants.js'
 
 const handleEscapeButton = (evt) => {
-  const openedPopup = document.querySelector('.popup_opened');
-  if (evt.key === 'Escape' && openedPopup) {
-    closePopup(openedPopup);
+  if (evt.key === 'Escape') {
+    closePopup(document.querySelector('.popup_opened'));
   }
 }
 

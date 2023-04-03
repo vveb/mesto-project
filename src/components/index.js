@@ -139,20 +139,11 @@ function openPost(cardValues) {
 }
 
 //like processing
-export function handleLikeClick(evt) {
-  if (evt.target.classList.contains('photo-post__like-button')) {
-    const card = evt.target.closest('.photo-post');
-    editLike(card);
-  }
-}
-
-function editLike(cardData) {
+export function editLike(cardData, setLikes) {
   api.toggleLike({ cardId: cardData.id, isLiked: cardData.likes.includes(mainUserId) })
-    .then(setLike)
+    .then(setLikes)
     .catch(handleError);
 }
-
-photoGrid.addEventListener('click', handleLikeClick);
 
 //delete post processing
 export function handleDeleteClick(evt) {
