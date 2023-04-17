@@ -16,13 +16,20 @@ import {
   avatarFormPrefix,
   newPostFormPrefix,
   editProfileFormPrefix,
+  serverURL,
+  requestHeaders,
 } from './constants.js';
 import { openPopup, closePopup } from './modal.js'
 import { setProfileData, getProfileData, setProfileAvatar } from './profile.js'
 import { createNewPost } from './card.js'
 import { enableFormValidation, resetFormValidation } from './validate-forms';
-import { renderLoading, handleError, getInputsData, setInputsData } from './utils.js'
-import { api } from './api.js'
+import { renderLoading, handleError, getInputsData, setInputsData } from './utils.js';
+import Api from './api.js';
+
+const api = new Api({
+  baseUrl: serverURL,
+  headers: requestHeaders,
+});
 
 //profile processing
 function renderEditProfile() {

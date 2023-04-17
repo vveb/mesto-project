@@ -59,10 +59,10 @@ const errorTextBox = document.getElementById('error-textbox');
 
 const serverURL = 'https://nomoreparties.co/v1/plus-cohort-22';
 const endpointURLs = {
-  profile: `${serverURL}/users/me`,
-  cards: `${serverURL}/cards`,
-  likes: `${serverURL}/cards/likes`,
-  avatar: `${serverURL}/users/me/avatar`,
+  profile: '/users/me',
+  cards: `/cards`,
+  likes: `/cards/likes`,
+  avatar: `/users/me/avatar`,
 }
 
 const requestHeaders = {
@@ -114,4 +114,5 @@ export { formConfig,
   avatarFormPrefix,
   newPostFormPrefix,
   editProfileFormPrefix,
+  serverURL
 }
