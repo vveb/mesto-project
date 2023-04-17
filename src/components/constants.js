@@ -52,8 +52,7 @@ const editProfileFormPrefix = 'profile-input-';
 const cardTemplateSelector = '#template-photo-post';
 const userNameSelector = '.profile__name';
 const userAboutSelector = '.profile__vocation';
-
-const photoGrid = document.querySelector('.photo-grid');
+const photoGridSelector = '.photo-grid';
 
 const profileAvatar = document.querySelector('.profile__avatar');
 const profileEditButton = document.querySelector('.profile__edit-button');
@@ -106,7 +105,7 @@ export const submitButtons = {
 }
 
 export { formConfig,
-  photoGrid,
+  // photoGrid,
   profileAvatar,
   profileEditButton,
   newPostAddButton,
@@ -125,4 +124,5 @@ export { formConfig,
   newPostForm,
   editAvatarForm,
   cardTemplateSelector,
+  photoGridSelector,
 }

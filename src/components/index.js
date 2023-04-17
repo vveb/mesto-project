@@ -1,7 +1,7 @@
 import '../pages/index.css';
 import {
   formConfig,
-  photoGrid,
+  photoGridSelector,
   popups,
   forms,
   submitButtons,
@@ -26,6 +26,7 @@ import { setProfileAvatar } from './profile.js';
 import Card from './card.js';
 import FormValidator from './validate-forms';
 import { renderLoading, handleError, getInputsData, setInputsData, editLike, renderPost } from './utils.js';
+import Section from './Section.js'
 
 const editProfileFormValidator = new FormValidator(formConfig, editProfileForm);
 const newPostFormValidator = new FormValidator(formConfig, newPostForm);
@@ -77,9 +78,13 @@ function saveNewPost(evt) {
   closePopup(popups.popupNewPost);
 }
 
-function addPost(cardData) {
-  const newCard = new Card (cardData, cardTemplateSelector, userInfo.mainUserId,{ likeClickHandler: editLike });
-  photoGrid.prepend(newCard.createNewCard());
+function addPost(newCardData) {
+  const updatedPhotoGrid = new Section({ items: [newCardData], renderer: (newCardData) => {
+    const newCard = new Card (newCardData, cardTemplateSelector, userInfo.mainUserId,{ likeClickHandler: editLike });
+    updatedPhotoGrid.addItemReverse(newCard.createNewCard());
+  }}, photoGridSelector);
+  
+  updatedPhotoGrid.renderItems();
 }
 
 function addNewPost(data) {
@@ -140,14 +145,16 @@ function loadInitialData() {
       userInfo.mainUserId = _id;
       userInfo.setUserInfo({ name, about });
       setProfileAvatar({ avatar });
-      cards.forEach(function(cardData) {
-        const newCard = new Card (cardData,
+      const initialPhotoGrid = new Section({ items: cards, renderer: (card) => {
+        const newCard = new Card (card,
           cardTemplateSelector,
           userInfo.mainUserId,
           { likeClickHandler: editLike, imageClickHandler: renderPost }
-          );
-        photoGrid.append(newCard.createNewCard());
-      });
+        );
+        initialPhotoGrid.addItem(newCard.createNewCard());
+      }}, photoGridSelector);
+      
+      initialPhotoGrid.renderItems();
     })
     .catch(handleError);
 }
