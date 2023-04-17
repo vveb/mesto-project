@@ -5,4 +5,3 @@ function setProfileAvatar({ avatar }) {
 }
 
 export { setProfileAvatar };
-

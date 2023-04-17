@@ -2,7 +2,12 @@ import '../pages/index.css';
 import {
   formConfig,
   photoGridSelector,
-  popups,
+  popupEditProfile,
+  popupNewPost,
+  popupEditAvatar,
+  popupPost,
+  popupDeleteSubmit,
+  popupError,
   forms,
   submitButtons,
   profileEditButton,
@@ -21,12 +26,12 @@ import {
   api,
   userInfo,
   } from './constants.js';
-import { openPopup, closePopup } from './modal.js';
+// import { openPopup, closePopup } from './Popup.js';
 import { setProfileAvatar } from './profile.js';
 import Card from './card.js';
 import FormValidator from './validate-forms';
-import { renderLoading, handleError, getInputsData, setInputsData, editLike, renderPost } from './utils.js';
-import Section from './Section.js'
+import { renderLoading, handleError, getInputsData, setInputsData, editLike } from './utils.js';
+import Section from './Section.js';
 
 const editProfileFormValidator = new FormValidator(formConfig, editProfileForm);
 const newPostFormValidator = new FormValidator(formConfig, newPostForm);
@@ -44,13 +49,13 @@ function renderEditProfile() {
 
 function handleEditProfileClick() {
   renderEditProfile();
-  openPopup(popups.popupEditProfile);
+  openPopup(popupEditProfile);
 }
 
 function saveProfileInfo(evt) {
   evt.preventDefault();
   editProfile(getInputsData(editProfileFormInputsArray, editProfileFormPrefix));
-  closePopup(popups.popupEditProfile);
+  closePopup(popupEditProfile);
 }
 
 function editProfile(data) {
@@ -69,18 +74,22 @@ function renderNewPost() {
 
 function handleNewPostClick() {
   renderNewPost();
-  openPopup(popups.popupNewPost);
+  openPopup(popupNewPost);
 }
 
 function saveNewPost(evt) {
   evt.preventDefault();
   addNewPost(getInputsData(newPostFormInputsArray, newPostFormPrefix), evt);
-  closePopup(popups.popupNewPost);
+  closePopup(popupNewPost);
 }
 
 function addPost(newCardData) {
   const updatedPhotoGrid = new Section({ items: [newCardData], renderer: (newCardData) => {
-    const newCard = new Card (newCardData, cardTemplateSelector, userInfo.mainUserId,{ likeClickHandler: editLike });
+    const newCard = new Card (newCardData,
+      cardTemplateSelector,
+      userInfo.mainUserId,
+      { likeClickHandler: editLike, imageClickHandler: popupPost.openPopup }
+    );
     updatedPhotoGrid.addItemReverse(newCard.createNewCard());
   }}, photoGridSelector);
   
@@ -105,13 +114,13 @@ function renderEditAvatar() {
 
 function handleEditAvatarClick() {
   renderEditAvatar();
-  openPopup(popups.popupEditAvatar);
+  openPopup(popupEditAvatar);
 }
 
 function saveAvatar(evt) {
   evt.preventDefault();
   editAvatar(getInputsData(avatarFormInputsArray, avatarFormPrefix));
-  closePopup(popups.popupEditAvatar);
+  closePopup(popupEditAvatar);
 }
 
 function editAvatar(data) {
@@ -149,7 +158,7 @@ function loadInitialData() {
         const newCard = new Card (card,
           cardTemplateSelector,
           userInfo.mainUserId,
-          { likeClickHandler: editLike, imageClickHandler: renderPost }
+          { likeClickHandler: editLike, imageClickHandler: popupPost.openPopup }
         );
         initialPhotoGrid.addItem(newCard.createNewCard());
       }}, photoGridSelector);
@@ -173,11 +182,11 @@ function initModals() {
     evt.preventDefault();
     deleteCard(localStorage.getItem('cardIdToDelete'));
     localStorage.removeItem('cardIdToDelete');
-    closePopup(popups.popupDeleteSubmit);
+    closePopup(popupDeleteSubmit);
   });
   forms.errorForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
-    closePopup(popups.popupError);
+    closePopup(popupError);
   })
 }
 

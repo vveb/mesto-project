@@ -1,5 +1,10 @@
 import UserInfo from './UserInfo.js';
 import Api from './api.js';
+import PopupWithImage from './PopupWithImage.js';
+import {
+  renderPost
+} from './utils.js';
+// import PopupWithForm from './PopupWithForm.js';
 
 const formConfig = {
   formSelector: '.form',
@@ -11,10 +16,16 @@ const formConfig = {
 }
 
 //popups
+
+const popupPost = new PopupWithImage('.popup_post', renderPost);
+popupPost.setEventListeners();
+
+// const popupEditProfile = new PopupWithForm('.popup_edit-profile', saveProfileInfo)
+
 const popupEditProfile = document.querySelector('.popup_edit-profile');
 const popupNewPost = document.querySelector('.popup_new-post');
 const popupEditAvatar = document.querySelector('.popup_update-avatar');
-const popupPost = document.querySelector('.popup_post');
+// const popupPost = document.querySelector('.popup_post');
 const popupDeleteSubmit = document.querySelector('.popup_delete-submit');
 const popupError = document.querySelector('.popup_error');
 
@@ -25,18 +36,15 @@ const editAvatarForm = document.forms['update-avatar'];
 const deleteSubmitForm = document.forms['delete-submit'];
 const errorForm = document.forms['error-view'];
 
-//view post elements
-const imagePost = popupPost.querySelector('.view-post__image');
-const captionPost = popupPost.querySelector('.view-post__caption');
+// view post elements
+const imagePost = document.querySelector('.view-post__image');
+const captionPost = document.querySelector('.view-post__caption');
 
 //submit-buttons
 const editProfileSubmitButton = editProfileForm['submit-button'];
 const newPostSubmitButton = newPostForm['submit-button'];
 const editAvatarSubmitButton = editAvatarForm['submit-button'];
 const deleteSubmitButton = deleteSubmitForm['submit-button'];
-
-//all close buttons
-const closeButtons = document.querySelectorAll('.popup__close-button');
 
 //input arrays
 const avatarFormInputsArray = Array.from(editAvatarForm.querySelectorAll('.form__input'));
@@ -80,15 +88,6 @@ export const api = new Api({
 
 export const userInfo = new UserInfo({ userNameSelector, userAboutSelector });
 
-export const popups = {
-  popupEditProfile,
-  popupNewPost,
-  popupEditAvatar,
-  popupPost,
-  popupDeleteSubmit,
-  popupError,
-}
-
 export const forms = {
   editProfileForm,
   newPostForm,
@@ -125,4 +124,10 @@ export { formConfig,
   editAvatarForm,
   cardTemplateSelector,
   photoGridSelector,
+  popupEditProfile,
+  popupNewPost,
+  popupEditAvatar,
+  popupPost,
+  popupDeleteSubmit,
+  popupError,
 }

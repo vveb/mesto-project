@@ -1,7 +1,3 @@
-import { popups } from './constants.js';
-import { openPopup } from './modal.js';
-
-
 export default class Card {
   constructor({ name, link, owner, likes, _id }, cardTemplateSelector, mainUserId, { likeClickHandler, imageClickHandler }) {
     this._name = name;
@@ -51,7 +47,7 @@ export default class Card {
   _handleDeleteClick(evt) {
     const { id } = evt.target.closest('.photo-post');
     localStorage.setItem('cardIdToDelete', id);
-    openPopup(popups.popupDeleteSubmit);
+    // openPopup(popups.popupDeleteSubmit);
   }
 
   _setEventListeners() {

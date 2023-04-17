@@ -1,5 +1,5 @@
-import { popups, errorTextBox, imagePost, captionPost, api } from './constants.js'
-import { openPopup } from './modal.js';
+import { errorTextBox, imagePost, captionPost, api } from './constants.js'
+// import { openPopup } from './Popup.js';
 
 export function renderLoading(isLoading, submitButton, loadingText) {
   if (isLoading) {
@@ -13,7 +13,7 @@ export function renderLoading(isLoading, submitButton, loadingText) {
 
 function showError(errMessage) {
   errorTextBox.textContent = errMessage;
-  openPopup(popups.popupError);
+  openPopup(popupError);
 }
 
 export function handleError(err) {
@@ -52,5 +52,4 @@ export function renderPost({ title, link }) {
   imagePost.alt = title;
   imagePost.src = link;
   captionPost.textContent = title;
-  openPopup(popups.popupPost);
 }
