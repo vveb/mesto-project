@@ -13,7 +13,7 @@ export function renderLoading(isLoading, submitButton, loadingText) {
 
 function showError(errMessage) {
   errorTextBox.textContent = errMessage;
-  openPopup(popupError);
+  // openPopup(popupError);
 }
 
 export function handleError(err) {

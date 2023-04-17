@@ -4,7 +4,8 @@ import PopupWithImage from './PopupWithImage.js';
 import {
   renderPost
 } from './utils.js';
-// import PopupWithForm from './PopupWithForm.js';
+import PopupWithForm from './PopupWithForm.js';
+import { saveProfileInfo, saveNewPost, saveAvatar, submitDeleteCard } from './index.js';
 
 const formConfig = {
   formSelector: '.form',
@@ -20,13 +21,23 @@ const formConfig = {
 const popupPost = new PopupWithImage('.popup_post', renderPost);
 popupPost.setEventListeners();
 
-// const popupEditProfile = new PopupWithForm('.popup_edit-profile', saveProfileInfo)
+const popupEditProfile = new PopupWithForm('.popup_edit-profile', saveProfileInfo);
+popupEditProfile.setEventListeners();
 
-const popupEditProfile = document.querySelector('.popup_edit-profile');
-const popupNewPost = document.querySelector('.popup_new-post');
-const popupEditAvatar = document.querySelector('.popup_update-avatar');
+const popupNewPost = new PopupWithForm('.popup_new-post', saveNewPost);
+popupNewPost.setEventListeners();
+
+const popupEditAvatar = new PopupWithForm('.popup_update-avatar', saveAvatar);
+popupEditAvatar.setEventListeners();
+
+const popupDeleteSubmit = new PopupWithForm('.popup_delete-submit', submitDeleteCard);
+popupDeleteSubmit.setEventListeners();
+
+// const popupEditProfile = document.querySelector('.popup_edit-profile');
+// const popupNewPost = document.querySelector('.popup_new-post');
+// const popupEditAvatar = document.querySelector('.popup_update-avatar');
 // const popupPost = document.querySelector('.popup_post');
-const popupDeleteSubmit = document.querySelector('.popup_delete-submit');
+// const popupDeleteSubmit = document.querySelector('.popup_delete-submit');
 const popupError = document.querySelector('.popup_error');
 
 //forms

@@ -1,3 +1,5 @@
+import { popupDeleteSubmit } from "./constants";
+
 export default class Card {
   constructor({ name, link, owner, likes, _id }, cardTemplateSelector, mainUserId, { likeClickHandler, imageClickHandler }) {
     this._name = name;
@@ -47,7 +49,7 @@ export default class Card {
   _handleDeleteClick(evt) {
     const { id } = evt.target.closest('.photo-post');
     localStorage.setItem('cardIdToDelete', id);
-    // openPopup(popups.popupDeleteSubmit);
+    popupDeleteSubmit.openPopup();
   }
 
   _setEventListeners() {

@@ -30,7 +30,7 @@ import {
 import { setProfileAvatar } from './profile.js';
 import Card from './card.js';
 import FormValidator from './validate-forms';
-import { renderLoading, handleError, getInputsData, setInputsData, editLike } from './utils.js';
+import { renderLoading, handleError, getInputsData, editLike } from './utils.js';
 import Section from './Section.js';
 
 const editProfileFormValidator = new FormValidator(formConfig, editProfileForm);
@@ -41,28 +41,27 @@ const editAvatarFormValidator = new FormValidator(formConfig, editAvatarForm);
 function renderEditProfile() {
   forms.editProfileForm.reset();
   userInfo.getUserInfo()
-    .then((data) => {
-      setInputsData(editProfileFormInputsArray, editProfileFormPrefix, data);
-    })
+    .then(popupEditProfile.setInputValues) // setInputsData(editProfileFormInputsArray, editProfileFormPrefix, data);
+    .catch(handleError);
   editProfileFormValidator.resetFormValidation();
 }
 
 function handleEditProfileClick() {
   renderEditProfile();
-  openPopup(popupEditProfile);
+  popupEditProfile.openPopup();
 }
 
-function saveProfileInfo(evt) {
+export function saveProfileInfo(evt, data) {
   evt.preventDefault();
-  editProfile(getInputsData(editProfileFormInputsArray, editProfileFormPrefix));
-  closePopup(popupEditProfile);
+  editProfile(data);
+  popupEditProfile.closePopup();
 }
 
 function editProfile(data) {
-  renderLoading(true, submitButtons.editProfileSubmitButton, 'Сохранение...');
+  renderLoading(true, popupEditProfile.submitButton, 'Сохранение...');
   userInfo.setUserInfo(data)
     .finally(() => {
-      renderLoading(false, submitButtons.editProfileSubmitButton);
+      renderLoading(false, popupEditProfile.submitButton);
     });
 }
 
@@ -74,13 +73,13 @@ function renderNewPost() {
 
 function handleNewPostClick() {
   renderNewPost();
-  openPopup(popupNewPost);
+  popupNewPost.openPopup();
 }
 
-function saveNewPost(evt) {
+export function saveNewPost(evt, data) {
   evt.preventDefault();
-  addNewPost(getInputsData(newPostFormInputsArray, newPostFormPrefix), evt);
-  closePopup(popupNewPost);
+  addNewPost(data);
+  popupNewPost.closePopup();
 }
 
 function addPost(newCardData) {
@@ -97,12 +96,12 @@ function addPost(newCardData) {
 }
 
 function addNewPost(data) {
-  renderLoading(true, submitButtons.newPostSubmitButton, 'Сохранение...');
+  renderLoading(true, popupNewPost.submitButton, 'Сохранение...');
   api.addNewCard(data)
     .then(addPost)
     .catch(handleError)
     .finally(() => {
-      renderLoading(false, submitButtons.newPostSubmitButton);
+      renderLoading(false, popupNewPost.submitButton);
     })
 }
 
@@ -114,34 +113,34 @@ function renderEditAvatar() {
 
 function handleEditAvatarClick() {
   renderEditAvatar();
-  openPopup(popupEditAvatar);
+  popupEditAvatar.openPopup();
 }
 
-function saveAvatar(evt) {
+export function saveAvatar(evt, data) {
   evt.preventDefault();
-  editAvatar(getInputsData(avatarFormInputsArray, avatarFormPrefix));
-  closePopup(popupEditAvatar);
+  editAvatar(data);
+  popupEditAvatar.closePopup();
 }
 
 function editAvatar(data) {
-  renderLoading(true, submitButtons.editAvatarSubmitButton, 'Сохранение...');
+  renderLoading(true, popupEditAvatar.submitButton, 'Сохранение...');
   api.editProfileAvatar(data)
   .then(setProfileAvatar)
   .catch(handleError)
   .finally(() => {
-    renderLoading(false, submitButtons.editAvatarSubmitButton);
+    renderLoading(false, popupEditAvatar.submitButton);
   });
 }
 
 function deleteCard(id) {
-  renderLoading(true, submitButtons.deleteSubmitButton, 'Удаление...');
+  renderLoading(true, popupDeleteSubmit.submitButton, 'Удаление...');
   api.deleteCardData(id)
   .then(() => {
     document.getElementById(id).remove();
   })
   .catch(handleError)
   .finally(() => {
-    renderLoading(false, submitButtons.deleteSubmitButton);
+    renderLoading(false, popupDeleteSubmit.submitButton);
   });
 }
 
@@ -174,16 +173,18 @@ function initMainScreen() {
   profileAvatar.addEventListener('click', handleEditAvatarClick);
 }
 
+export function submitDeleteCard(evt) {
+  evt.preventDefault();
+  deleteCard(localStorage.getItem('cardIdToDelete'));
+  localStorage.removeItem('cardIdToDelete');
+  popupDeleteSubmit.closePopup()
+}
+
 function initModals() {
-  forms.editProfileForm.addEventListener('submit', saveProfileInfo);
-  forms.newPostForm.addEventListener('submit', saveNewPost);
-  forms.editAvatarForm.addEventListener('submit', saveAvatar);
-  forms.deleteSubmitForm.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-    deleteCard(localStorage.getItem('cardIdToDelete'));
-    localStorage.removeItem('cardIdToDelete');
-    closePopup(popupDeleteSubmit);
-  });
+  // forms.editProfileForm.addEventListener('submit', saveProfileInfo);
+  // forms.newPostForm.addEventListener('submit', saveNewPost);
+  // forms.editAvatarForm.addEventListener('submit', saveAvatar);
+  // forms.deleteSubmitForm.addEventListener('submit', submitDeleteCard);
   forms.errorForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
     closePopup(popupError);
