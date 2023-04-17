@@ -17,3 +17,4 @@ function setProfileAvatar({ avatar }) {
 }
 
 export { setProfileData, getProfileData, setProfileAvatar };
+

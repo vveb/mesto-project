@@ -1,3 +1,5 @@
+import Api from './api.js';
+
 const formConfig = {
   formSelector: '.form',
   inputSelector: '.form__input',
@@ -47,7 +49,7 @@ const editProfileFormPrefix = 'profile-input-';
 
 const photoGrid = document.querySelector('.photo-grid');
 
-const templatePhotoPost = document.querySelector('#template-photo-post').content;
+const cardTemplateSelector = '#template-photo-post';
 
 const profileAvatar = document.querySelector('.profile__avatar');
 const profileEditButton = document.querySelector('.profile__edit-button');
@@ -94,6 +96,11 @@ export const submitButtons = {
   deleteSubmitButton,
 }
 
+export const api = new Api({
+  baseUrl: serverURL,
+  headers: requestHeaders,
+});
+
 export { formConfig,
   photoGrid,
   profileAvatar,
@@ -104,7 +111,6 @@ export { formConfig,
   closeButtons,
   imagePost,
   captionPost,
-  templatePhotoPost,
   errorTextBox,
   requestHeaders,
   endpointURLs,
@@ -118,4 +124,5 @@ export { formConfig,
   editProfileForm,
   newPostForm,
   editAvatarForm,
+  cardTemplateSelector,
 }

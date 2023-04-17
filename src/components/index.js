@@ -5,8 +5,6 @@ import {
   popups,
   forms,
   submitButtons,
-  imagePost,
-  captionPost,
   profileEditButton,
   newPostAddButton,
   profileAvatar,
@@ -16,23 +14,17 @@ import {
   avatarFormPrefix,
   newPostFormPrefix,
   editProfileFormPrefix,
-  serverURL,
-  requestHeaders,
   editProfileForm,
   newPostForm,
   editAvatarForm,
+  cardTemplateSelector,
+  api,
 } from './constants.js';
-import { openPopup, closePopup } from './modal.js'
-import { setProfileData, getProfileData, setProfileAvatar } from './profile.js'
-import { createNewPost } from './card.js'
+import { openPopup, closePopup } from './modal.js';
+import { setProfileData, getProfileData, setProfileAvatar } from './profile.js';
+import Card from './card.js';
 import FormValidator from './validate-forms';
 import { renderLoading, handleError, getInputsData, setInputsData } from './utils.js';
-import Api from './api.js';
-
-const api = new Api({
-  baseUrl: serverURL,
-  headers: requestHeaders,
-});
 
 const editProfileFormValidator = new FormValidator(formConfig, editProfileForm);
 const newPostFormValidator = new FormValidator(formConfig, newPostForm);
@@ -83,8 +75,9 @@ function saveNewPost(evt) {
   closePopup(popups.popupNewPost);
 }
 
-function addPost(data) {
-  photoGrid.prepend(createNewPost(data, mainUserId));
+function addPost(cardData) {
+  const newCard = new Card (cardData, cardTemplateSelector);
+  photoGrid.prepend(newCard.createNewCard(mainUserId));
 }
 
 function addNewPost(data) {
@@ -124,36 +117,6 @@ function editAvatar(data) {
   });
 }
 
-//view post processing
-export function handleCardImageClick(evt) {
-  openPost({ title: evt.target.alt, link: evt.target.src });
-}
-
-function renderPost({ title, link }) {
-  imagePost.alt = title;
-  imagePost.src = link;
-  captionPost.textContent = title;
-}
-
-function openPost(cardValues) {
-  renderPost(cardValues);
-  openPopup(popups.popupPost);
-}
-
-//like processing
-export function editLike(cardData, setLikes) {
-  api.toggleLike({ cardId: cardData.id, isLiked: cardData.likes.includes(mainUserId) })
-    .then(setLikes)
-    .catch(handleError);
-}
-
-//delete post processing
-export function handleDeleteClick(evt) {
-  const { id } = evt.target.closest('.photo-post');
-  localStorage.setItem('cardIdToDelete', id);
-  openPopup(popups.popupDeleteSubmit);
-}
-
 function deleteCard(id) {
   renderLoading(true, submitButtons.deleteSubmitButton, 'Удаление...');
   api.deleteCardData(id)
@@ -177,8 +140,9 @@ function loadInitialData() {
       mainUserId = _id;
       setProfileData({ name, about });
       setProfileAvatar({ avatar });
-      cards.forEach(function(item) {
-        photoGrid.append(createNewPost(item, mainUserId));
+      cards.forEach(function(cardData) {
+        const newCard = new Card (cardData, cardTemplateSelector);
+        photoGrid.append(newCard.createNewCard(mainUserId));
       });
     })
     .catch(handleError);

@@ -16,7 +16,7 @@ export default class Api {
     });
   }
 
-  _goFetch( { endpoint, data, method }) {
+  async _goFetch( { endpoint, data, method }) {
     const options = {
       headers: this._headers,
       method,
@@ -25,7 +25,8 @@ export default class Api {
       options.method = method;
       options.body = JSON.stringify(data);
     }
-    return fetch(this._baseUrl + endpoint, options).then(this._checkResponseOk);
+    const res = await fetch(this._baseUrl + endpoint, options);
+    return this._checkResponseOk(res);
   }
 
   getProfileData() {
