@@ -1,3 +1,4 @@
+import UserInfo from './UserInfo.js';
 import Api from './api.js';
 
 const formConfig = {
@@ -42,20 +43,21 @@ const avatarFormInputsArray = Array.from(editAvatarForm.querySelectorAll('.form_
 const newPostFormInputsArray = Array.from(newPostForm.querySelectorAll('.form__input'));
 const editProfileFormInputsArray = Array.from(editProfileForm.querySelectorAll('.form__input'));
 
-//prefixes
+//input prefixes
 const avatarFormPrefix = 'avatar-input-';
 const newPostFormPrefix = 'place-input-';
 const editProfileFormPrefix = 'profile-input-';
 
-const photoGrid = document.querySelector('.photo-grid');
-
+//selectors
 const cardTemplateSelector = '#template-photo-post';
+const userNameSelector = '.profile__name';
+const userAboutSelector = '.profile__vocation';
+
+const photoGrid = document.querySelector('.photo-grid');
 
 const profileAvatar = document.querySelector('.profile__avatar');
 const profileEditButton = document.querySelector('.profile__edit-button');
 const newPostAddButton = document.querySelector('.profile__add-button');
-const profileName = document.querySelector('.profile__name');
-const profileVocation = document.querySelector('.profile__vocation');
 
 const errorTextBox = document.getElementById('error-textbox');
 
@@ -71,6 +73,13 @@ const requestHeaders = {
   authorization: '8d808c3f-b327-4ea6-8bf0-44d89d4dbe86',
   "Content-Type": "application/json",
 }
+
+export const api = new Api({
+  baseUrl: serverURL,
+  headers: requestHeaders,
+});
+
+export const userInfo = new UserInfo({ userNameSelector, userAboutSelector });
 
 export const popups = {
   popupEditProfile,
@@ -96,23 +105,15 @@ export const submitButtons = {
   deleteSubmitButton,
 }
 
-export const api = new Api({
-  baseUrl: serverURL,
-  headers: requestHeaders,
-});
-
 export { formConfig,
   photoGrid,
   profileAvatar,
   profileEditButton,
   newPostAddButton,
-  profileName,
-  profileVocation,
-  closeButtons,
+  // closeButtons,
   imagePost,
   captionPost,
   errorTextBox,
-  requestHeaders,
   endpointURLs,
   avatarFormInputsArray,
   newPostFormInputsArray,
@@ -120,7 +121,6 @@ export { formConfig,
   avatarFormPrefix,
   newPostFormPrefix,
   editProfileFormPrefix,
-  serverURL,
   editProfileForm,
   newPostForm,
   editAvatarForm,

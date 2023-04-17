@@ -1,5 +1,3 @@
-import { closeButtons } from './constants.js'
-
 const handleEscapeButton = (evt) => {
   if (evt.key === 'Escape') {
     closePopup(document.querySelector('.popup_opened'));
@@ -25,6 +23,7 @@ function closePopup(popup) {
   document.removeEventListener('keydown', handleEscapeButton);
 }
 
+const closeButtons = document.querySelectorAll('.popup__close-button'); //Почему их надо объявлять тут?
 closeButtons.forEach((button) => {
   const popup = button.closest('.popup');
   button.addEventListener('click', () => closePopup(popup));

@@ -1,49 +1,51 @@
-import { popups, imagePost, captionPost, api } from './constants.js';
-import { openPopup } from './modal.js'
-import { handleError } from './utils.js';
+import { popups } from './constants.js';
+import { openPopup } from './modal.js';
 
 
 export default class Card {
-  constructor({ name, link, owner, likes, _id }, cardTemplateSelector) {
+  constructor({ name, link, owner, likes, _id }, cardTemplateSelector, mainUserId, { likeClickHandler, imageClickHandler }) {
     this._name = name;
     this._link = link;
     this._owner = owner._id;
     this._likes = likes.map((user) => user._id);
     this._id = _id;
     this._selector = cardTemplateSelector;
+    this._mainUserId = mainUserId;
+    this._likeClickHandler = likeClickHandler;
+    this.setLikes = this.setLikes.bind(this);
+    this._handleLikeClick = this._handleLikeClick.bind(this);
+    this._imageClickHandler = imageClickHandler;
+    this._handleCardImageClick = this._handleCardImageClick.bind(this);
+  }
+
+  _isLiked() {
+    return this._likes.includes(this._mainUserId);
   }
 
   _createCardElement() {
     return document.querySelector(this._selector).content.querySelector('.photo-post').cloneNode(true);
   }
 
-  _handleCardImageClick(evt) {
-    imagePost.alt = evt.target.alt;
-    imagePost.src = evt.target.src;
-    captionPost.textContent = evt.target.alt;
-    openPopup(popups.popupPost);
+  _handleCardImageClick() {
+    this._imageClickHandler({ title: this._name, link: this._link })
   }
 
   _renderLikes() {
     this._cardLikesCount.textContent = this._likes.length;
-    if (this._likes.includes(this._mainUserId)) {
+    if (this._isLiked()) {
       this._cardLikeButton.classList.add('photo-post__like-button_active');
     } else {
       this._cardLikeButton.classList.remove('photo-post__like-button_active');
     }
   }
 
-  _setLikes(card) {
-    this._likes = card.likes.map((user) => user._id);
+  setLikes(likes) {
+    this._likes = likes.map((user) => user._id);
     this._renderLikes();
   }
 
   _handleLikeClick() {
-    api.toggleLike({ cardId: this._id, isLiked: this._likes.includes(this._mainUserId) })
-      .then((card) => {
-        this._setLikes(card);
-      })
-      .catch(handleError);
+    this._likeClickHandler(this._id, this._isLiked(), this.setLikes);
   }
   
   _handleDeleteClick(evt) {
@@ -53,20 +55,18 @@ export default class Card {
   }
 
   _setEventListeners() {
-    this._cardImage.addEventListener('click', (evt) => this._handleCardImageClick(evt));
-    this._cardLikeButton.addEventListener('click', () => this._handleLikeClick());
+    this._cardImage.addEventListener('click', this._handleCardImageClick);
+    this._cardLikeButton.addEventListener('click', this._handleLikeClick);
     this._deleteButton.addEventListener('click', (evt) => this._handleDeleteClick(evt));
   }
   
-  createNewCard(mainUserId) {
-    this._mainUserId = mainUserId;
+  createNewCard() {
     this._cardElement = this._createCardElement();
-    this._cardElement.id = this._id;
+    this._cardElement.id = this._id; //Это надо убрать
 
     this._cardImage = this._cardElement.querySelector('.photo-post__image');
     this._cardImage.src = this._link;
     this._cardImage.alt = this._name;
-    
     
     this._cardElement.querySelector('.photo-post__title').textContent = this._name;
     

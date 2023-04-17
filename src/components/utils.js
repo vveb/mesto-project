@@ -1,4 +1,4 @@
-import { popups, errorTextBox } from './constants.js'
+import { popups, errorTextBox, imagePost, captionPost, api } from './constants.js'
 import { openPopup } from './modal.js';
 
 export function renderLoading(isLoading, submitButton, loadingText) {
@@ -38,4 +38,19 @@ export function setInputsData(inputsArray, formPrefix, data) {
   inputsArray.forEach((input) => {
     input.value = data[input.id.slice(prefixLength)];
   })
+}
+
+export function editLike(id, isLiked, setLikes) {
+  api.toggleLike({ cardId: id, isLiked })
+    .then(({ likes }) => {
+      setLikes(likes);
+    })
+    .catch(handleError);
+}
+
+export function renderPost({ title, link }) {
+  imagePost.alt = title;
+  imagePost.src = link;
+  captionPost.textContent = title;
+  openPopup(popups.popupPost);
 }

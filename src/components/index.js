@@ -1,4 +1,4 @@
-import '../pages/index.css'
+import '../pages/index.css';
 import {
   formConfig,
   photoGrid,
@@ -19,12 +19,13 @@ import {
   editAvatarForm,
   cardTemplateSelector,
   api,
-} from './constants.js';
+  userInfo,
+  } from './constants.js';
 import { openPopup, closePopup } from './modal.js';
-import { setProfileData, getProfileData, setProfileAvatar } from './profile.js';
+import { setProfileAvatar } from './profile.js';
 import Card from './card.js';
 import FormValidator from './validate-forms';
-import { renderLoading, handleError, getInputsData, setInputsData } from './utils.js';
+import { renderLoading, handleError, getInputsData, setInputsData, editLike, renderPost } from './utils.js';
 
 const editProfileFormValidator = new FormValidator(formConfig, editProfileForm);
 const newPostFormValidator = new FormValidator(formConfig, newPostForm);
@@ -33,7 +34,10 @@ const editAvatarFormValidator = new FormValidator(formConfig, editAvatarForm);
 //profile processing
 function renderEditProfile() {
   forms.editProfileForm.reset();
-  setInputsData(editProfileFormInputsArray, editProfileFormPrefix, getProfileData());
+  userInfo.getUserInfo()
+    .then((data) => {
+      setInputsData(editProfileFormInputsArray, editProfileFormPrefix, data);
+    })
   editProfileFormValidator.resetFormValidation();
 }
 
@@ -50,9 +54,7 @@ function saveProfileInfo(evt) {
 
 function editProfile(data) {
   renderLoading(true, submitButtons.editProfileSubmitButton, 'Сохранение...');
-  api.editProfileInfo(data)
-    .then(setProfileData)
-    .catch(handleError)
+  userInfo.setUserInfo(data)
     .finally(() => {
       renderLoading(false, submitButtons.editProfileSubmitButton);
     });
@@ -76,8 +78,8 @@ function saveNewPost(evt) {
 }
 
 function addPost(cardData) {
-  const newCard = new Card (cardData, cardTemplateSelector);
-  photoGrid.prepend(newCard.createNewCard(mainUserId));
+  const newCard = new Card (cardData, cardTemplateSelector, userInfo.mainUserId,{ likeClickHandler: editLike });
+  photoGrid.prepend(newCard.createNewCard());
 }
 
 function addNewPost(data) {
@@ -131,18 +133,20 @@ function deleteCard(id) {
 
 //main processing
 
-let mainUserId;
-
 function loadInitialData() {
-  Promise.all([api.getProfileData(), api.loadCards()])
+  Promise.all([userInfo.getUserInfo(), api.loadCards()])
     .then(([ profileData, cards ]) => {
       const { name, about, avatar, _id } = profileData;
-      mainUserId = _id;
-      setProfileData({ name, about });
+      userInfo.mainUserId = _id;
+      userInfo.setUserInfo({ name, about });
       setProfileAvatar({ avatar });
       cards.forEach(function(cardData) {
-        const newCard = new Card (cardData, cardTemplateSelector);
-        photoGrid.append(newCard.createNewCard(mainUserId));
+        const newCard = new Card (cardData,
+          cardTemplateSelector,
+          userInfo.mainUserId,
+          { likeClickHandler: editLike, imageClickHandler: renderPost }
+          );
+        photoGrid.append(newCard.createNewCard());
       });
     })
     .catch(handleError);
