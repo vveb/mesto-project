@@ -114,5 +114,8 @@ export { formConfig,
   avatarFormPrefix,
   newPostFormPrefix,
   editProfileFormPrefix,
-  serverURL
+  serverURL,
+  editProfileForm,
+  newPostForm,
+  editAvatarForm,
 }

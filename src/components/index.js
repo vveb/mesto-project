@@ -18,11 +18,14 @@ import {
   editProfileFormPrefix,
   serverURL,
   requestHeaders,
+  editProfileForm,
+  newPostForm,
+  editAvatarForm,
 } from './constants.js';
 import { openPopup, closePopup } from './modal.js'
 import { setProfileData, getProfileData, setProfileAvatar } from './profile.js'
 import { createNewPost } from './card.js'
-import { enableFormValidation, resetFormValidation } from './validate-forms';
+import FormValidator from './validate-forms';
 import { renderLoading, handleError, getInputsData, setInputsData } from './utils.js';
 import Api from './api.js';
 
@@ -31,11 +34,15 @@ const api = new Api({
   headers: requestHeaders,
 });
 
+const editProfileFormValidator = new FormValidator(formConfig, editProfileForm);
+const newPostFormValidator = new FormValidator(formConfig, newPostForm);
+const editAvatarFormValidator = new FormValidator(formConfig, editAvatarForm);
+
 //profile processing
 function renderEditProfile() {
   forms.editProfileForm.reset();
   setInputsData(editProfileFormInputsArray, editProfileFormPrefix, getProfileData());
-  resetFormValidation(forms.editProfileForm, formConfig);
+  editProfileFormValidator.resetFormValidation();
 }
 
 function handleEditProfileClick() {
@@ -62,7 +69,7 @@ function editProfile(data) {
 //new post processing
 function renderNewPost() {
   forms.newPostForm.reset();
-  resetFormValidation(forms.newPostForm, formConfig);
+  newPostFormValidator.resetFormValidation();
 }
 
 function handleNewPostClick() {
@@ -93,7 +100,7 @@ function addNewPost(data) {
 // avatar processing
 function renderEditAvatar() {
   forms.editAvatarForm.reset();
-  resetFormValidation(forms.editAvatarForm, formConfig);
+  editAvatarFormValidator.resetFormValidation();
 }
 
 function handleEditAvatarClick() {
@@ -199,11 +206,17 @@ function initModals() {
   })
 }
 
+function initFormValidation() {
+  editProfileFormValidator.enableFormValidation();
+  newPostFormValidator.enableFormValidation();
+  editAvatarFormValidator.enableFormValidation();
+}
+
 function initApp() {
   loadInitialData();
   initMainScreen();
   initModals();
-  enableFormValidation(formConfig);
+  initFormValidation();
 }
 
 initApp();
