@@ -9,14 +9,12 @@ export default class Popup {
   _handleEscapeButton = (evt) => {
     if (evt.key === 'Escape') {
       this.closePopup();
-      // closePopup(document.querySelector('.popup_opened'));
     }
   }
 
   _handlePopupOverlayClick = (evt) => {
     if (evt.target === evt.currentTarget) {
       this.closePopup();
-      // closePopup(evt.currentTarget);
     }
   }
 

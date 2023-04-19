@@ -1,11 +1,11 @@
-import { api } from './constants.js'
-import { handleError } from './utils.js';
-
 export default class UserInfo {
-  constructor({ userNameSelector, userAboutSelector }) {
+  constructor({ userNameSelector, userAboutSelector }, setUserInfoHandler, getUserInfoHandler) {
     this._name = document.querySelector(userNameSelector);
     this._about = document.querySelector(userAboutSelector);
     this._mainUserId = '';
+    this._setUserInfoHandler = setUserInfoHandler;
+    this._setUserInfoHandler = this._setUserInfoHandler.bind(this);
+    this._getUserInfoHandler = getUserInfoHandler;
   }
 
   get mainUserId() {
@@ -17,15 +17,10 @@ export default class UserInfo {
   }
 
   setUserInfo(data) {
-    return api.editProfileInfo(data)
-      .then((data) => {
-        this._name.textContent = data.name;
-        this._about.textContent = data.about;
-      })
-      .catch(handleError);
+    return this._setUserInfoHandler(data, this._name, this._about);
   }
 
   getUserInfo() {
-    return api.getProfileData();
+    return this._getUserInfoHandler();
   }
 }

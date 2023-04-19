@@ -1,47 +1,48 @@
-import '../pages/index.css';
+import './index.css';
 import {
   formConfig,
-  photoGridSelector,
-  popupEditProfile,
-  popupNewPost,
-  popupEditAvatar,
-  popupPost,
-  popupDeleteSubmit,
-  popupError,
-  forms,
-  submitButtons,
-  profileEditButton,
-  newPostAddButton,
-  profileAvatar,
-  avatarFormInputsArray,
-  newPostFormInputsArray,
-  editProfileFormInputsArray,
-  avatarFormPrefix,
-  newPostFormPrefix,
-  editProfileFormPrefix,
-  editProfileForm,
-  newPostForm,
-  editAvatarForm,
-  cardTemplateSelector,
+  cardTemplateSelector, photoGridSelector, userNameSelector, userAboutSelector,
+  profileEditButton, newPostAddButton, profileAvatar,
   api,
-  userInfo,
-  } from './constants.js';
-// import { openPopup, closePopup } from './Popup.js';
-import { setProfileAvatar } from './profile.js';
-import Card from './card.js';
-import FormValidator from './validate-forms';
-import { renderLoading, handleError, getInputsData, editLike } from './utils.js';
-import Section from './Section.js';
+  } from '../utils/constants.js';
+import { renderLoading, handleError, editLike, editUserData, renderPost, getUserData } from '../utils/utils.js';
 
-const editProfileFormValidator = new FormValidator(formConfig, editProfileForm);
-const newPostFormValidator = new FormValidator(formConfig, newPostForm);
-const editAvatarFormValidator = new FormValidator(formConfig, editAvatarForm);
+import Card from '../components/Card.js';
+import FormValidator from '../components/FormValidator.js';
+import PopupWithForm from '../components/PopupWithForm.js';
+import PopupWithImage from '../components/PopupWithImage.js';
+import Section from '../components/Section.js';
+import UserInfo from '../components/UserInfo.js';
+
+// popups
+const popupPost = new PopupWithImage('.popup_post', renderPost);
+popupPost.setEventListeners();
+
+const popupEditProfile = new PopupWithForm('.popup_edit-profile', saveProfileInfo);
+popupEditProfile.setEventListeners();
+
+const popupNewPost = new PopupWithForm('.popup_new-post', saveNewPost);
+popupNewPost.setEventListeners();
+
+const popupEditAvatar = new PopupWithForm('.popup_update-avatar', saveAvatar);
+popupEditAvatar.setEventListeners();
+
+const popupDeleteSubmit = new PopupWithForm('.popup_delete-submit', submitDeleteCard);
+popupDeleteSubmit.setEventListeners();
+
+// form validators
+const editProfileFormValidator = new FormValidator(formConfig, popupEditProfile.form);
+const newPostFormValidator = new FormValidator(formConfig, popupNewPost.form);
+const editAvatarFormValidator = new FormValidator(formConfig, popupEditAvatar.form);
+
+// user info
+const userInfo = new UserInfo({ userNameSelector, userAboutSelector }, editUserData, getUserData);
 
 //profile processing
 function renderEditProfile() {
-  forms.editProfileForm.reset();
+  popupEditProfile.resetForm();
   userInfo.getUserInfo()
-    .then(popupEditProfile.setInputValues) // setInputsData(editProfileFormInputsArray, editProfileFormPrefix, data);
+    .then(popupEditProfile.setInputValues)
     .catch(handleError);
   editProfileFormValidator.resetFormValidation();
 }
@@ -51,7 +52,7 @@ function handleEditProfileClick() {
   popupEditProfile.openPopup();
 }
 
-export function saveProfileInfo(evt, data) {
+function saveProfileInfo(evt, data) {
   evt.preventDefault();
   editProfile(data);
   popupEditProfile.closePopup();
@@ -67,7 +68,7 @@ function editProfile(data) {
 
 //new post processing
 function renderNewPost() {
-  forms.newPostForm.reset();
+  popupNewPost.resetForm()
   newPostFormValidator.resetFormValidation();
 }
 
@@ -76,7 +77,7 @@ function handleNewPostClick() {
   popupNewPost.openPopup();
 }
 
-export function saveNewPost(evt, data) {
+function saveNewPost(evt, data) {
   evt.preventDefault();
   addNewPost(data);
   popupNewPost.closePopup();
@@ -87,7 +88,8 @@ function addPost(newCardData) {
     const newCard = new Card (newCardData,
       cardTemplateSelector,
       userInfo.mainUserId,
-      { likeClickHandler: editLike, imageClickHandler: popupPost.openPopup }
+      { likeClickHandler: editLike, imageClickHandler: popupPost.openPopup },
+      popupDeleteSubmit,
     );
     updatedPhotoGrid.addItemReverse(newCard.createNewCard());
   }}, photoGridSelector);
@@ -107,7 +109,7 @@ function addNewPost(data) {
 
 // avatar processing
 function renderEditAvatar() {
-  forms.editAvatarForm.reset();
+  popupEditAvatar.resetForm();
   editAvatarFormValidator.resetFormValidation();
 }
 
@@ -116,7 +118,7 @@ function handleEditAvatarClick() {
   popupEditAvatar.openPopup();
 }
 
-export function saveAvatar(evt, data) {
+function saveAvatar(evt, data) {
   evt.preventDefault();
   editAvatar(data);
   popupEditAvatar.closePopup();
@@ -125,7 +127,9 @@ export function saveAvatar(evt, data) {
 function editAvatar(data) {
   renderLoading(true, popupEditAvatar.submitButton, 'Сохранение...');
   api.editProfileAvatar(data)
-  .then(setProfileAvatar)
+  .then(({ avatar }) => {
+    profileAvatar.style.backgroundImage = `url(${avatar})`;
+  })
   .catch(handleError)
   .finally(() => {
     renderLoading(false, popupEditAvatar.submitButton);
@@ -152,16 +156,17 @@ function loadInitialData() {
       const { name, about, avatar, _id } = profileData;
       userInfo.mainUserId = _id;
       userInfo.setUserInfo({ name, about });
-      setProfileAvatar({ avatar });
+      profileAvatar.style.backgroundImage = `url(${avatar})`;
+      
       const initialPhotoGrid = new Section({ items: cards, renderer: (card) => {
         const newCard = new Card (card,
           cardTemplateSelector,
           userInfo.mainUserId,
-          { likeClickHandler: editLike, imageClickHandler: popupPost.openPopup }
+          { likeClickHandler: editLike, imageClickHandler: popupPost.openPopup },
+          popupDeleteSubmit,
         );
         initialPhotoGrid.addItem(newCard.createNewCard());
       }}, photoGridSelector);
-      
       initialPhotoGrid.renderItems();
     })
     .catch(handleError);
@@ -173,22 +178,11 @@ function initMainScreen() {
   profileAvatar.addEventListener('click', handleEditAvatarClick);
 }
 
-export function submitDeleteCard(evt) {
+function submitDeleteCard(evt) {
   evt.preventDefault();
   deleteCard(localStorage.getItem('cardIdToDelete'));
   localStorage.removeItem('cardIdToDelete');
   popupDeleteSubmit.closePopup()
-}
-
-function initModals() {
-  // forms.editProfileForm.addEventListener('submit', saveProfileInfo);
-  // forms.newPostForm.addEventListener('submit', saveNewPost);
-  // forms.editAvatarForm.addEventListener('submit', saveAvatar);
-  // forms.deleteSubmitForm.addEventListener('submit', submitDeleteCard);
-  forms.errorForm.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-    closePopup(popupError);
-  })
 }
 
 function initFormValidation() {
@@ -200,7 +194,7 @@ function initFormValidation() {
 function initApp() {
   loadInitialData();
   initMainScreen();
-  initModals();
+  // initModals();
   initFormValidation();
 }
 

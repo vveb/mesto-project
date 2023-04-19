@@ -1,5 +1,5 @@
-import { errorTextBox, imagePost, captionPost, api } from './constants.js'
-// import { openPopup } from './Popup.js';
+import { errorTextBox, imagePost, captionPost, api } from './constants.js';
+import PopupWithForm from '../components/PopupWithForm.js';
 
 export function renderLoading(isLoading, submitButton, loadingText) {
   if (isLoading) {
@@ -11,9 +11,17 @@ export function renderLoading(isLoading, submitButton, loadingText) {
   }
 }
 
+const popupError = new PopupWithForm('.popup_error', submitError);
+popupError.setEventListeners();
+
+function submitError(evt) {
+  evt.preventDefault();
+  popupError.closePopup();
+}
+
 function showError(errMessage) {
   errorTextBox.textContent = errMessage;
-  // openPopup(popupError);
+  popupError.openPopup();
 }
 
 export function handleError(err) {
@@ -46,6 +54,19 @@ export function editLike(id, isLiked, setLikes) {
       setLikes(likes);
     })
     .catch(handleError);
+}
+
+export function editUserData(data, name, about) {
+  return api.editProfileInfo(data)
+    .then((data) => {
+      name.textContent = data.name;
+      about.textContent = data.about;
+    })
+    .catch(handleError);
+}
+
+export function getUserData() {
+  return api.getProfileData();
 }
 
 export function renderPost({ title, link }) {

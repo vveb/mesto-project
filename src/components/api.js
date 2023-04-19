@@ -1,4 +1,4 @@
-import { endpointURLs } from './constants.js'
+import { endpointURLs } from '../utils/constants.js'
 
 export default class Api {
   constructor({ baseUrl, headers }) {
