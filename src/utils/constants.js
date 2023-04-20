@@ -1,7 +1,6 @@
 import Api from '../components/Api.js';
 
 const formConfig = {
-  formSelector: '.form',
   inputSelector: '.form__input',
   submitButtonSelector: '.form__submit',
   inactiveButtonClass: 'form__submit_disabled',

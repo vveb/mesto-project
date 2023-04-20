@@ -5,11 +5,11 @@ export default class Section {
     this._container = document.querySelector(containerSelector);
   }
 
-  addItem(element) {
+  addItem(element) { // все
     this._container.append(element);
   }
 
-  addItemReverse(element) {
+  addItemReverse(element) { //одну
     this._container.prepend(element);
   }
 

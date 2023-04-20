@@ -10,6 +10,7 @@ export default class Api {
     if (res.ok) {
       return res.json();
     }
+    // return Promise.reject(res);
     return res.json().then((err) => {
       err.statusCode = res.status;
       return Promise.reject(err);

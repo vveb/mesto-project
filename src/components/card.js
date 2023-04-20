@@ -8,6 +8,12 @@ export default class Card {
     this._owner = owner._id;
     this._likes = likes.map((user) => user._id);
     this._id = _id;
+    this._cardElement = document.querySelector(cardTemplateSelector).content.querySelector('.photo-post').cloneNode(true);
+    this._cardImage = this._cardElement.querySelector('.photo-post__image');
+    this._cardTitle = this._cardElement.querySelector('.photo-post__title');
+    this._cardLikeButton = this._cardElement.querySelector('.photo-post__like-button');
+    this._cardLikesCount = this._cardElement.querySelector('.photo-post__likes-count');
+    this._deleteButton = this._cardElement.querySelector('.photo-post__delete-button');
     this._selector = cardTemplateSelector;
     this._mainUserId = mainUserId;
     this._likeClickHandler = likeClickHandler;
@@ -16,14 +22,11 @@ export default class Card {
     this._imageClickHandler = imageClickHandler;
     this._handleCardImageClick = this._handleCardImageClick.bind(this);
     this._popupDeleteSubmit = popupDeleteSubmit;
+    this._handleDeleteClick = this._handleDeleteClick.bind(this);
   }
 
   _isLiked() {
     return this._likes.includes(this._mainUserId);
-  }
-
-  _createCardElement() {
-    return document.querySelector(this._selector).content.querySelector('.photo-post').cloneNode(true);
   }
 
   _handleCardImageClick() {
@@ -48,33 +51,25 @@ export default class Card {
     this._likeClickHandler(this._id, this._isLiked(), this.setLikes);
   }
   
-  _handleDeleteClick(evt) {
-    const { id } = evt.target.closest('.photo-post');
-    localStorage.setItem('cardIdToDelete', id);
+  _handleDeleteClick() {
+    sessionStorage.setItem('cardIdToDelete', this._id);
     this._popupDeleteSubmit.openPopup();
   }
 
   _setEventListeners() {
     this._cardImage.addEventListener('click', this._handleCardImageClick);
     this._cardLikeButton.addEventListener('click', this._handleLikeClick);
-    this._deleteButton.addEventListener('click', (evt) => this._handleDeleteClick(evt));
+    this._deleteButton.addEventListener('click', this._handleDeleteClick);
   }
   
   createNewCard() {
-    this._cardElement = this._createCardElement();
     this._cardElement.id = this._id; //Это надо убрать
-
-    this._cardImage = this._cardElement.querySelector('.photo-post__image');
     this._cardImage.src = this._link;
     this._cardImage.alt = this._name;
     
-    this._cardElement.querySelector('.photo-post__title').textContent = this._name;
-    
-    this._cardLikeButton = this._cardElement.querySelector('.photo-post__like-button');
-    this._cardLikesCount = this._cardElement.querySelector('.photo-post__likes-count');
-    this._renderLikes();
+    this._cardTitle.textContent = this._name;
 
-    this._deleteButton = this._cardElement.querySelector('.photo-post__delete-button');
+    this._renderLikes();
 
     this._setEventListeners();
 

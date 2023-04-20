@@ -3,11 +3,11 @@ import PopupWithForm from '../components/PopupWithForm.js';
 
 export function renderLoading(isLoading, submitButton, loadingText) {
   if (isLoading) {
-    localStorage.setItem('buttonText', submitButton.textContent);
+    sessionStorage.setItem('buttonText', submitButton.textContent);
     submitButton.textContent = loadingText;
   } else {
-    submitButton.textContent = localStorage.getItem('buttonText');
-    localStorage.removeItem('buttonText');
+    submitButton.textContent = sessionStorage.getItem('buttonText');
+    sessionStorage.removeItem('buttonText');
   }
 }
 
@@ -61,8 +61,7 @@ export function editUserData(data, name, about) {
     .then((data) => {
       name.textContent = data.name;
       about.textContent = data.about;
-    })
-    .catch(handleError);
+    });
 }
 
 export function getUserData() {
@@ -73,4 +72,9 @@ export function renderPost({ title, link }) {
   imagePost.alt = title;
   imagePost.src = link;
   captionPost.textContent = title;
+}
+
+export function addNewPostData(data, addPost) {
+  return api.addNewCard(data)
+    .then(addPost);
 }

@@ -5,7 +5,7 @@ import {
   profileEditButton, newPostAddButton, profileAvatar,
   api,
   } from '../utils/constants.js';
-import { renderLoading, handleError, editLike, editUserData, renderPost, getUserData } from '../utils/utils.js';
+import { renderLoading, handleError, editLike, editUserData, renderPost, getUserData, addNewPostData } from '../utils/utils.js';
 
 import Card from '../components/Card.js';
 import FormValidator from '../components/FormValidator.js';
@@ -38,6 +38,16 @@ const editAvatarFormValidator = new FormValidator(formConfig, popupEditAvatar.fo
 // user info
 const userInfo = new UserInfo({ userNameSelector, userAboutSelector }, editUserData, getUserData);
 
+function createCard(item) {
+  const newCard = new Card (item,
+    cardTemplateSelector,
+    userInfo.mainUserId,
+    { likeClickHandler: editLike, imageClickHandler: popupPost.openPopup },
+    popupDeleteSubmit,
+  );
+  return newCard.createNewCard();
+}
+
 //profile processing
 function renderEditProfile() {
   popupEditProfile.resetForm();
@@ -55,12 +65,13 @@ function handleEditProfileClick() {
 function saveProfileInfo(evt, data) {
   evt.preventDefault();
   editProfile(data);
-  popupEditProfile.closePopup();
 }
 
 function editProfile(data) {
   renderLoading(true, popupEditProfile.submitButton, 'Сохранение...');
   userInfo.setUserInfo(data)
+    .then(popupEditProfile.closePopup)
+    .catch(handleError)
     .finally(() => {
       renderLoading(false, popupEditProfile.submitButton);
     });
@@ -79,32 +90,17 @@ function handleNewPostClick() {
 
 function saveNewPost(evt, data) {
   evt.preventDefault();
-  addNewPost(data);
-  popupNewPost.closePopup();
-}
-
-function addPost(newCardData) {
-  const updatedPhotoGrid = new Section({ items: [newCardData], renderer: (newCardData) => {
-    const newCard = new Card (newCardData,
-      cardTemplateSelector,
-      userInfo.mainUserId,
-      { likeClickHandler: editLike, imageClickHandler: popupPost.openPopup },
-      popupDeleteSubmit,
-    );
-    updatedPhotoGrid.addItemReverse(newCard.createNewCard());
-  }}, photoGridSelector);
-  
-  updatedPhotoGrid.renderItems();
-}
-
-function addNewPost(data) {
   renderLoading(true, popupNewPost.submitButton, 'Сохранение...');
-  api.addNewCard(data)
-    .then(addPost)
+  addNewPostData(data, addPost)
+    .then(popupNewPost.closePopup())
     .catch(handleError)
     .finally(() => {
       renderLoading(false, popupNewPost.submitButton);
     })
+}
+
+function addPost(newCardData) {
+  photoGrid.addItemReverse(createCard(newCardData));
 }
 
 // avatar processing
@@ -121,7 +117,6 @@ function handleEditAvatarClick() {
 function saveAvatar(evt, data) {
   evt.preventDefault();
   editAvatar(data);
-  popupEditAvatar.closePopup();
 }
 
 function editAvatar(data) {
@@ -129,6 +124,7 @@ function editAvatar(data) {
   api.editProfileAvatar(data)
   .then(({ avatar }) => {
     profileAvatar.style.backgroundImage = `url(${avatar})`;
+    popupEditAvatar.closePopup();
   })
   .catch(handleError)
   .finally(() => {
@@ -141,6 +137,8 @@ function deleteCard(id) {
   api.deleteCardData(id)
   .then(() => {
     document.getElementById(id).remove();
+    sessionStorage.removeItem('cardIdToDelete');
+    popupDeleteSubmit.closePopup();
   })
   .catch(handleError)
   .finally(() => {
@@ -149,25 +147,21 @@ function deleteCard(id) {
 }
 
 //main processing
+let photoGrid;
 
 function loadInitialData() {
   Promise.all([userInfo.getUserInfo(), api.loadCards()])
     .then(([ profileData, cards ]) => {
       const { name, about, avatar, _id } = profileData;
       userInfo.mainUserId = _id;
-      userInfo.setUserInfo({ name, about });
+      userInfo.setUserInfo({ name, about })
+        .catch(handleError);
       profileAvatar.style.backgroundImage = `url(${avatar})`;
-      
-      const initialPhotoGrid = new Section({ items: cards, renderer: (card) => {
-        const newCard = new Card (card,
-          cardTemplateSelector,
-          userInfo.mainUserId,
-          { likeClickHandler: editLike, imageClickHandler: popupPost.openPopup },
-          popupDeleteSubmit,
-        );
-        initialPhotoGrid.addItem(newCard.createNewCard());
+
+      photoGrid = new Section({ items: cards, renderer: (card) => {
+        photoGrid.addItem(createCard(card));
       }}, photoGridSelector);
-      initialPhotoGrid.renderItems();
+      photoGrid.renderItems();
     })
     .catch(handleError);
 }
@@ -180,9 +174,7 @@ function initMainScreen() {
 
 function submitDeleteCard(evt) {
   evt.preventDefault();
-  deleteCard(localStorage.getItem('cardIdToDelete'));
-  localStorage.removeItem('cardIdToDelete');
-  popupDeleteSubmit.closePopup()
+  deleteCard(sessionStorage.getItem('cardIdToDelete'));
 }
 
 function initFormValidation() {

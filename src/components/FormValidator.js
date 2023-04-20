@@ -1,19 +1,17 @@
 export default class FormValidator {
   constructor({
-    formSelector,
     inputSelector,
     submitButtonSelector,
     inactiveButtonClass,
     inputErrorClass,
     errorClass,
   }, formElement) {
-    this._formSelector = formSelector;
-    this._inputSelector = inputSelector;
-    this._submitButtonSelector = submitButtonSelector;
     this._inactiveButtonClass = inactiveButtonClass;
     this._inputErrorClass = inputErrorClass;
     this._errorClass = errorClass;
     this._formElement = formElement;
+    this._submitButton = this._formElement.querySelector(submitButtonSelector);
+    this._inputList = Array.from(this._formElement.querySelectorAll(inputSelector));
   }
 
   _showInputError(inputElement, message) {
@@ -69,13 +67,11 @@ export default class FormValidator {
   }
 
   _setInputEventListeners() {
-    const inputList = Array.from(this._formElement.querySelectorAll(this._inputSelector));
-    const submitButton = this._formElement.querySelector(this._submitButtonSelector);
-    this._toggleSubmitButtonState(inputList, submitButton);
-    inputList.forEach(inputElement => {
+    this._toggleSubmitButtonState(this._inputList, this._submitButton);
+    this._inputList.forEach(inputElement => {
       inputElement.addEventListener('input', () => {
         this._checkInputValidity(inputElement);
-        this._toggleSubmitButtonState(inputList, submitButton);
+        this._toggleSubmitButtonState(this._inputList, this._submitButton);
       });
     });
   }
@@ -85,10 +81,9 @@ export default class FormValidator {
   }
 
   resetFormValidation() {
-    const inputList = Array.from(this._formElement.querySelectorAll(this._inputSelector));
-    const submitButton = this._formElement.querySelector(this._submitButtonSelector);
-    this._disableSubmitButton(submitButton);
-    inputList.forEach(inputElement => {
+    this._disableSubmitButton(this._submitButton);
+    this._inputList.forEach(inputElement => {
+      this._checkInputValidity(inputElement);
       this._hideInputError(inputElement);
     });
   }
