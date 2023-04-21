@@ -1,41 +1,81 @@
-import { handleCardImageClick, handleDeleteClick, editLike } from './index.js'
-import { templatePhotoPost } from './constants.js';
+export default class Card {
+  constructor({ name, link, owner, likes, _id },
+    cardTemplateSelector, mainUserId,
+    { likeClickHandler, imageClickHandler },
+    popupDeleteSubmit) {
+    this._name = name;
+    this._link = link;
+    this._owner = owner._id;
+    this._likes = likes.map((user) => user._id);
+    this._id = _id;
+    this._cardElement = document.querySelector(cardTemplateSelector).content.querySelector('.photo-post').cloneNode(true);
+    this._cardImage = this._cardElement.querySelector('.photo-post__image');
+    this._cardTitle = this._cardElement.querySelector('.photo-post__title');
+    this._cardLikeButton = this._cardElement.querySelector('.photo-post__like-button');
+    this._cardLikesCount = this._cardElement.querySelector('.photo-post__likes-count');
+    this._deleteButton = this._cardElement.querySelector('.photo-post__delete-button');
+    this._selector = cardTemplateSelector;
+    this._mainUserId = mainUserId;
+    this._likeClickHandler = likeClickHandler;
+    this.setLikes = this.setLikes.bind(this);
+    this._handleLikeClick = this._handleLikeClick.bind(this);
+    this._imageClickHandler = imageClickHandler;
+    this._handleCardImageClick = this._handleCardImageClick.bind(this);
+    this._popupDeleteSubmit = popupDeleteSubmit;
+    this._handleDeleteClick = this._handleDeleteClick.bind(this);
+  }
 
-export function createNewPost({ name, link, owner, likes, _id }, mainUserId) {
-  const photoPost = templatePhotoPost.querySelector('.photo-post').cloneNode(true);
-  photoPost.id = _id;
-  photoPost.userId = mainUserId;
-  photoPost.ownerId = owner._id;
-  photoPost.likes = likes.map((user) => user._id);
-  const photoPostImage = photoPost.querySelector('.photo-post__image');
-  photoPostImage.src = link;
-  photoPostImage.alt = name;
-  photoPostImage.addEventListener('click', handleCardImageClick);
-  photoPost.querySelector('.photo-post__title').textContent = name;
-  const photoPostLikeButton = photoPost.querySelector('.photo-post__like-button');
-  const photoPostlikesCount = photoPost.querySelector('.photo-post__likes-count');
-  function renderLikes() {
-    photoPostlikesCount.textContent = photoPost.likes.length;
-    if (photoPost.likes.includes(photoPost.userId)) {
-      photoPostLikeButton.classList.add('photo-post__like-button_active');
+  _isLiked() {
+    return this._likes.includes(this._mainUserId);
+  }
+
+  _handleCardImageClick() {
+    this._imageClickHandler({ title: this._name, link: this._link })
+  }
+
+  _renderLikes() {
+    this._cardLikesCount.textContent = this._likes.length;
+    if (this._isLiked()) {
+      this._cardLikeButton.classList.add('photo-post__like-button_active');
     } else {
-      photoPostLikeButton.classList.remove('photo-post__like-button_active');
+      this._cardLikeButton.classList.remove('photo-post__like-button_active');
     }
   }
-  function setLikes(card) {
-    photoPost.likes = card.likes.map((user) => user._id);
-    renderLikes();
+
+  setLikes(likes) {
+    this._likes = likes.map((user) => user._id);
+    this._renderLikes();
   }
-  function handleLikeClick() {
-    editLike(photoPost, setLikes);
+
+  _handleLikeClick() {
+    this._likeClickHandler(this._id, this._isLiked(), this.setLikes);
   }
-  photoPostLikeButton.addEventListener('click', handleLikeClick);
-  renderLikes();
-  const deleteButton = photoPost.querySelector('.photo-post__delete-button');
-  if (photoPost.ownerId === photoPost.userId) {
-    deleteButton.addEventListener('click', handleDeleteClick);
-  } else {
-    deleteButton.remove();
+  
+  _handleDeleteClick() {
+    sessionStorage.setItem('cardIdToDelete', this._id);
+    this._popupDeleteSubmit.openPopup();
   }
-  return photoPost;
+
+  _setEventListeners() {
+    this._cardImage.addEventListener('click', this._handleCardImageClick);
+    this._cardLikeButton.addEventListener('click', this._handleLikeClick);
+    this._deleteButton.addEventListener('click', this._handleDeleteClick);
+  }
+  
+  createNewCard() {
+    this._cardElement.id = this._id; //Это надо убрать
+    this._cardImage.src = this._link;
+    this._cardImage.alt = this._name;
+    
+    this._cardTitle.textContent = this._name;
+
+    this._renderLikes();
+
+    this._setEventListeners();
+
+    if (this._owner !== this._mainUserId) this._deleteButton.remove();
+
+    return this._cardElement;
+  }
+
 }
