@@ -1,11 +1,11 @@
 import './index.css';
 import {
   formConfig,
-  cardTemplateSelector, photoGridSelector, userNameSelector, userAboutSelector,
-  profileEditButton, newPostAddButton, profileAvatar,
+  cardTemplateSelector, photoGridSelector, userNameSelector, userAboutSelector, avatarSelector,
+  profileEditButton, newPostAddButton,
   api,
   } from '../utils/constants.js';
-import { renderLoading, handleError, editLike, editUserData, renderPost, getUserData, addNewPostData } from '../utils/utils.js';
+import { renderLoading, handleError, editLike, editUserData, renderPost, getUserData, addNewPostData, editAvatarData } from '../utils/utils.js';
 
 import Card from '../components/Card.js';
 import FormValidator from '../components/FormValidator.js';
@@ -36,7 +36,7 @@ const newPostFormValidator = new FormValidator(formConfig, popupNewPost.form);
 const editAvatarFormValidator = new FormValidator(formConfig, popupEditAvatar.form);
 
 // user info
-const userInfo = new UserInfo({ userNameSelector, userAboutSelector }, editUserData, getUserData);
+const userInfo = new UserInfo({ userNameSelector, userAboutSelector, avatarSelector }, editUserData, getUserData, editAvatarData);
 
 function createCard(item) {
   const newCard = new Card (item,
@@ -121,10 +121,10 @@ function saveAvatar(evt, data) {
 
 function editAvatar(data) {
   renderLoading(true, popupEditAvatar.submitButton, 'Сохранение...');
-  api.editProfileAvatar(data)
-  .then(({ avatar }) => {
-    profileAvatar.style.backgroundImage = `url(${avatar})`;
-    popupEditAvatar.closePopup();
+  userInfo.editProfileAvatarData(data)
+    .then(({ avatar }) => {
+      userInfo.setProfileAvatar(avatar);
+      popupEditAvatar.closePopup()
   })
   .catch(handleError)
   .finally(() => {
@@ -156,7 +156,7 @@ function loadInitialData() {
       userInfo.mainUserId = _id;
       userInfo.setUserInfo({ name, about })
         .catch(handleError);
-      profileAvatar.style.backgroundImage = `url(${avatar})`;
+      userInfo.setProfileAvatar(avatar)
 
       photoGrid = new Section({ items: cards, renderer: (card) => {
         photoGrid.addItem(createCard(card));
@@ -169,7 +169,7 @@ function loadInitialData() {
 function initMainScreen() {
   profileEditButton.addEventListener('click', handleEditProfileClick);
   newPostAddButton.addEventListener('click', handleNewPostClick);
-  profileAvatar.addEventListener('click', handleEditAvatarClick);
+  userInfo.profileAvatar.addEventListener('click', handleEditAvatarClick);
 }
 
 function submitDeleteCard(evt) {

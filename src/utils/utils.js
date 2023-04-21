@@ -78,3 +78,7 @@ export function addNewPostData(data, addPost) {
   return api.addNewCard(data)
     .then(addPost);
 }
+
+export function editAvatarData(data) {
+  return api.editProfileAvatar(data);
+}

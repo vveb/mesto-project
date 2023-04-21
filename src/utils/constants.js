@@ -17,8 +17,8 @@ const cardTemplateSelector = '#template-photo-post';
 const userNameSelector = '.profile__name';
 const userAboutSelector = '.profile__vocation';
 const photoGridSelector = '.photo-grid';
+const avatarSelector = '.profile__avatar';
 
-const profileAvatar = document.querySelector('.profile__avatar');
 const profileEditButton = document.querySelector('.profile__edit-button');
 const newPostAddButton = document.querySelector('.profile__add-button');
 
@@ -44,8 +44,8 @@ const api = new Api({
 
 
 export { formConfig,
-  profileAvatar, profileEditButton, newPostAddButton, imagePost, captionPost,
+  profileEditButton, newPostAddButton, imagePost, captionPost,
   errorTextBox,
-  cardTemplateSelector, photoGridSelector, userNameSelector, userAboutSelector,
+  cardTemplateSelector, photoGridSelector, userNameSelector, userAboutSelector, avatarSelector,
   api, endpointURLs,
 }
